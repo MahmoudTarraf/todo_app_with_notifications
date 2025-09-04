@@ -10,9 +10,8 @@ class AppLink {
   static String serverApiRoot = "$appRoot/api";
 
   //Local link
-  static const String localLink = "https://todo-app-node-backend.onrender.com/";
-  static const String aiGeminiLink =
-      "https://gemini-node-backend.onrender.com/";
+  static const String localLink = "https://todo-app-node-backend.onrender.com";
+  static const String aiGeminiLink = "https://gemini-node-backend.onrender.com";
   // ===== AI Gemini Endpoints =====
   static const String extractTextFromImage = "$aiGeminiLink/extract-text";
 

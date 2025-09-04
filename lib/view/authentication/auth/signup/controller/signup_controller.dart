@@ -92,6 +92,7 @@ class SignupController extends GetxController {
       };
       statusRequest = StatusRequest.loading;
       update();
+
       // ConstData.token = await _firebaseMessaging.getToken() ?? '';
       final result = await Crud().postData(
         AppLink.register,
