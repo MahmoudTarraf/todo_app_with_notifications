@@ -20,8 +20,8 @@ class AppTranslations extends Translations {
           'Streak': 'Streak',
           'days': 'days',
           ''
-              "Small steps every day lead to big results."
-              '': ' ' "Small steps every day lead to big results." '',
+                  "Small steps every day lead to big results.":
+              "Small steps every day lead to big results." '',
           'See All': 'See All',
           //achievements card
           'Progress: ': 'Progress: ',
