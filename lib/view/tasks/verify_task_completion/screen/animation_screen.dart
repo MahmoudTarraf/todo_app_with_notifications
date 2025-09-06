@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:todo_app_with_notifications/core/const_data/app_animations.dart';
 import 'package:todo_app_with_notifications/core/const_data/text_styles.dart';
-import 'package:todo_app_with_notifications/widgets/custom_app_bar.dart';
 
 class AnimationScreen extends StatelessWidget {
   final String animationName;
@@ -23,8 +22,14 @@ class AnimationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar:
-          isCompleted ? CustomAppBar(title: 'Analyzing Complete!'.tr) : null,
+      appBar: isCompleted
+          ? AppBar(
+              title: Text(
+                'Analyzing Complete!'.tr,
+                style: TextStyles.headingTextStyle(context),
+              ),
+            )
+          : null,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

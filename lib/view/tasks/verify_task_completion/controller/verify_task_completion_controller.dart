@@ -16,6 +16,8 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:mime/mime.dart';
 
+import '../../../../core/service/routes.dart';
+
 class VerifyTaskCompletionController extends GetxController {
   String? status;
   String? explanation;
@@ -85,29 +87,29 @@ class VerifyTaskCompletionController extends GetxController {
             ));
         final streamedResponse = await request.send();
         final response = await http.Response.fromStream(streamedResponse);
-
+        safeCloseAnimation();
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           parseResponse(data['description']);
-          Get.back();
 
-          if (status!.toLowerCase().contains('completed') && confidence >= 80) {
-            Get.to(() => AnimationScreen(
+          if (status == 'Completed' && confidence >= 80) {
+            final IncompleteTasksController incompleteTasksController =
+                Get.put(IncompleteTasksController());
+
+            await incompleteTasksController.markTaskAsCompleted(task);
+            Get.off(() => AnimationScreen(
                   animationName: AppAnimations.congratulations,
                   analysisText: explanation,
                   isLoading: false,
                   isCompleted: true,
                 ));
-            final IncompleteTasksController incompleteTasksController =
-                Get.put(IncompleteTasksController());
-
-            incompleteTasksController.markTaskAsCompleted(task);
           } else {
-            Get.to(() => AnimationScreen(
+            // If status is 'Not completed' OR confidence < 80
+            Get.off(() => AnimationScreen(
                   isLoading: false,
                   animationName: AppAnimations.failure,
                   analysisText: explanation,
-                  isCompleted: false,
+                  isCompleted: true,
                 ));
           }
         } else {
@@ -116,6 +118,7 @@ class VerifyTaskCompletionController extends GetxController {
             '${"Server error:".tr} ${response.statusCode}',
             ColorsManager.primary,
           );
+          Get.offNamed(Routes.incompleteTasksScreen);
         }
       } else {
         Messages.getSnackMessage(
@@ -123,9 +126,12 @@ class VerifyTaskCompletionController extends GetxController {
           'Please check your connection and try again.'.tr,
           ColorsManager.primary,
         );
+        Get.offNamed(Routes.incompleteTasksScreen);
       }
     } catch (e) {
+      safeCloseAnimation();
       Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Get.offNamed(Routes.incompleteTasksScreen);
     }
   }
 
@@ -143,5 +149,18 @@ class VerifyTaskCompletionController extends GetxController {
     explanation = explanationMatch?.group(1)?.trim() ?? '';
     confidence =
         confidenceMatch != null ? int.parse(confidenceMatch.group(1)!) : 0;
+
+    // ✅ Normalize status to standard values
+    if (status!.toLowerCase() == 'completed') {
+      status = 'Completed';
+    } else {
+      status = 'Not completed';
+    }
+  }
+
+  void safeCloseAnimation() {
+    if (Get.isOverlaysOpen || Get.currentRoute.contains('AnimationScreen')) {
+      Get.back();
+    }
   }
 }

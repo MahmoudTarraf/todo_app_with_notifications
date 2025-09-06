@@ -39,107 +39,109 @@ class UpdateTasksScreen extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
         child: Obx(
-          () => SingleChildScrollView(
-            padding: EdgeInsets.all(16.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 15.h),
-                Text('Title'.tr, style: TextStyles.bodyTextStyle(context)),
-                TextField(controller: controller.titleController),
-                SizedBox(height: 20.h),
-                Text('Content'.tr, style: TextStyles.bodyTextStyle(context)),
-                TextField(
-                    controller: controller.contentController, maxLines: 4),
-                SizedBox(height: 20.h),
-                Text('Priority'.tr, style: TextStyles.bodyTextStyle(context)),
-                Row(
-                  children: ['high', 'medium', 'low'].map((p) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8.w),
-                      child: ChoiceChip(
-                        label: Text(p.toUpperCase().tr),
-                        selected: controller.priority.value == p,
-                        selectedColor: controller.getPriorityColor(p),
-                        onSelected: (_) => controller.priority.value = p,
-                      ),
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 20.h),
-                Text('Deadline'.tr, style: TextStyles.bodyTextStyle(context)),
-                TextButton.icon(
-                  icon: const Icon(Icons.calendar_today),
-                  label: Text(
-                    controller.selectedDeadline.value == null
-                        ? 'Pick Deadline'.tr
-                        : DateFormat('MMM d, y – hh:mm a')
-                            .format(controller.selectedDeadline.value!),
-                  ),
-                  onPressed: () => controller.pickDeadline(context),
-                ),
-                SizedBox(height: 30.h),
-                Center(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(
-                            'Confirm Update'.tr,
-                            style: TextStyles.bodyTextStyle(context),
-                          ),
-                          content: Text(
-                            '${"Are you sure you want to update this task?".tr}\n${"You will have".tr} ${thisUser!.remainingUpdates - 1} ${"update(s) left.".tr}',
-                            style: TextStyle(fontSize: 16.sp),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Cancel'.tr),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                controller.submitUpdate();
-                                // ! make sure to do
-                                // remainingUpdates--;
-                                Navigator.pop(context);
-
-                                Navigator.pop(context); // close dialog
-                              },
-                              child: Text(
-                                'update'.tr,
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                          ],
+          () {
+            final incompleteController =
+                Get.put(IncompleteTasksController(), permanent: true);
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(16.r),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 15.h),
+                  Text('Title'.tr, style: TextStyles.bodyTextStyle(context)),
+                  TextField(controller: controller.titleController),
+                  SizedBox(height: 20.h),
+                  Text('Content'.tr, style: TextStyles.bodyTextStyle(context)),
+                  TextField(
+                      controller: controller.contentController, maxLines: 4),
+                  SizedBox(height: 20.h),
+                  Text('Priority'.tr, style: TextStyles.bodyTextStyle(context)),
+                  Row(
+                    children: ['high', 'medium', 'low'].map((p) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 8.w),
+                        child: ChoiceChip(
+                          label: Text(p.toUpperCase().tr),
+                          selected: controller.priority.value == p,
+                          selectedColor: controller.getPriorityColor(p),
+                          onSelected: (_) => controller.priority.value = p,
                         ),
                       );
-                    },
-                    icon: Icon(
-                      Icons.update,
-                      color: isDark ? Colors.black : Colors.white,
-                      size: 30.r,
+                    }).toList(),
+                  ),
+                  SizedBox(height: 20.h),
+                  Text('Deadline'.tr, style: TextStyles.bodyTextStyle(context)),
+                  TextButton.icon(
+                    icon: const Icon(Icons.calendar_today),
+                    label: Text(
+                      controller.selectedDeadline.value == null
+                          ? 'Pick Deadline'.tr
+                          : DateFormat('MMM d, y – hh:mm a')
+                              .format(controller.selectedDeadline.value!),
                     ),
-                    label: incompleteController.statusRequest ==
-                            StatusRequest.loading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : Text(
-                            'UpdateTheTask'.tr,
-                            style: TextStyles.smallTextStyle(context).copyWith(
+                    onPressed: () => controller.pickDeadline(context),
+                  ),
+                  SizedBox(height: 30.h),
+                  incompleteController.statusRequest.value ==
+                          StatusRequest.loading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      : Center(
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(
+                                    'Confirm Update'.tr,
+                                    style: TextStyles.bodyTextStyle(context),
+                                  ),
+                                  content: Text(
+                                    '${"Are you sure you want to update this task?".tr}\n${"You will have".tr} ${thisUser!.remainingUpdates - 1} ${"update(s) left.".tr}',
+                                    style: TextStyle(fontSize: 16.sp),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('Cancel'.tr),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        controller.submitUpdate();
+                                      },
+                                      child: Text(
+                                        'update'.tr,
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.update,
                               color: isDark ? Colors.black : Colors.white,
+                              size: 30.r,
+                            ),
+                            label: Text(
+                              'UpdateTheTask'.tr,
+                              style:
+                                  TextStyles.smallTextStyle(context).copyWith(
+                                color: isDark ? Colors.black : Colors.white,
+                              ),
                             ),
                           ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                        ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_with_notifications/core/class/status_request.dart';
-import 'package:todo_app_with_notifications/core/const_data/app_colors.dart';
 import 'package:todo_app_with_notifications/view/tasks/incomplete_tasks/controller/incomplete_tasks_controller.dart';
 import '../../../../../core/const_data/text_styles.dart';
 import '../controller/add_task_controller.dart';
@@ -15,8 +14,6 @@ class AddTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final incompleteController =
-        Get.put(IncompleteTasksController(), permanent: true);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -27,8 +24,11 @@ class AddTaskScreen extends StatelessWidget {
                 TextStyles.headingTextStyle(context).copyWith(fontSize: 25.sp),
           ),
         ),
-        body: Obx(
-          () => SingleChildScrollView(
+        body: Obx(() {
+          final incompleteController =
+              Get.put(IncompleteTasksController(), permanent: true);
+
+          return SingleChildScrollView(
             padding: EdgeInsets.all(16.r),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,26 +170,27 @@ class AddTaskScreen extends StatelessWidget {
                   maxLines: 3,
                 ),
                 const SizedBox(height: 24),
-                Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      final taskData = controller.getTaskData();
-                      controller.submitTask(taskData);
-                      Navigator.pop(context, taskData);
-                      controller.clearAll();
-                    },
-                    icon: Icon(
-                      Icons.check,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                    label: incompleteController.statusRequest ==
-                            StatusRequest.loading
-                        ? const CircularProgressIndicator(
-                            color: ColorsManager.white,
-                          )
-                        : Text(
+                incompleteController.statusRequest.value ==
+                        StatusRequest.loading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            final taskData = controller.getTaskData();
+                            controller.submitTask(taskData);
+                          },
+                          icon: Icon(
+                            Icons.check,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.black
+                                    : Colors.white,
+                          ),
+                          label: Text(
                             'Add_Task_ach'.tr,
                             style: TextStyles.smallTextStyle(context).copyWith(
                               color: Theme.of(context).brightness ==
@@ -198,17 +199,17 @@ class AddTaskScreen extends StatelessWidget {
                                   : Colors.white,
                             ),
                           ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 12),
-                    ),
-                  ),
-                ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 32, vertical: 12),
+                          ),
+                        ),
+                      ),
               ],
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

@@ -20,6 +20,31 @@ class CompletedTasksScreen extends StatelessWidget {
           'Completed Tasks'.tr,
           style: TextStyles.headingTextStyle(context),
         ),
+        actions: [
+          GetBuilder<IncompleteTasksController>(
+            builder: (controller) {
+              return IconButton(
+                icon: controller.isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : Icon(
+                        color: Theme.of(context).primaryColor,
+                        Icons.refresh,
+                        size: 30,
+                      ),
+                onPressed: controller.isLoading
+                    ? null
+                    : () => controller.refreshTasks(),
+              );
+            },
+          ),
+        ],
       ),
       body: GetBuilder<IncompleteTasksController>(
         init: IncompleteTasksController(),

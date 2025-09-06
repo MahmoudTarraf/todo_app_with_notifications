@@ -20,14 +20,21 @@ import '../../../../data/model/task_model.dart';
 
 class IncompleteTasksController extends GetxController {
   var taskList = <TaskModel>[];
+  bool isLoading = false;
   final DatabaseService _databaseService = DatabaseService.instance;
-  StatusRequest statusRequest = StatusRequest.none;
+  Rx<StatusRequest> statusRequest = StatusRequest.none.obs;
   // final notificationService = NotificationService.instance;
   IncompleteTasksController() {
     loadTasks();
   }
 
-  void loadTasks() async {
+  Future<void> refreshTasks() async {
+    await loadTasks();
+  }
+
+  Future<void> loadTasks() async {
+    isLoading = true;
+    update();
     try {
       if (await NetworkManager().isOnline()) {
         final result = await Crud().getData(AppLink.getTasks);
@@ -87,15 +94,17 @@ class IncompleteTasksController extends GetxController {
     } catch (e) {
       Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
       loadTasksFromLocalDB();
+    } finally {
+      isLoading = false;
+      update();
     }
   }
 
 // first check for internet access then upload to server then to local DB
-  void addTask(Map<String, dynamic> task) async {
+  Future<void> addTask(Map<String, dynamic> task) async {
     try {
       if (await NetworkManager().isOnline()) {
-        statusRequest = StatusRequest.loading;
-        update();
+        statusRequest.value = StatusRequest.loading;
         final fcmToken = await FirebaseMessaging.instance.getToken();
         task['fcmToken'] = fcmToken;
 
@@ -103,9 +112,10 @@ class IncompleteTasksController extends GetxController {
             .postData(AppLink.addTask, task, AppLink().getHeaderToken(), false);
         result.fold(
           (error) {
-            statusRequest = StatusRequest.error; // Update with error status
+            statusRequest.value =
+                StatusRequest.error; // Update with error status
 
-            statusRequest = StatusRequest.error;
+            statusRequest.value = StatusRequest.error;
             Messages.getSnackMessage(
               "Error".tr,
               error.message ?? "Something went wrong".tr, // fallback if null
@@ -113,8 +123,7 @@ class IncompleteTasksController extends GetxController {
             );
           },
           (responseBody) async {
-            statusRequest = StatusRequest.success;
-            update();
+            statusRequest.value = StatusRequest.success;
             Messages.getSnackMessage(
               "Success".tr,
               "Task added Successfully!",
@@ -140,8 +149,8 @@ class IncompleteTasksController extends GetxController {
               localTask,
             );
 
-            loadTasks();
-            Get.toNamed(Routes.incompleteTasksScreen);
+            await loadTasks();
+            Get.offNamed(Routes.incompleteTasksScreen);
           },
         );
       } else {
@@ -154,8 +163,7 @@ class IncompleteTasksController extends GetxController {
     } catch (e) {
       Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
     } finally {
-      statusRequest = StatusRequest.none;
-      update();
+      statusRequest.value = StatusRequest.none;
     }
   }
 
@@ -165,8 +173,7 @@ class IncompleteTasksController extends GetxController {
 
     try {
       if (await NetworkManager().isOnline()) {
-        statusRequest = StatusRequest.loading;
-        update();
+        statusRequest.value = StatusRequest.loading;
         final result = await Crud().putData(
           "${AppLink.updateTask}/${task.id}",
           task.toMap(),
@@ -174,9 +181,9 @@ class IncompleteTasksController extends GetxController {
         );
         result.fold(
           (error) {
-            statusRequest = StatusRequest.error; // Update with error status
+            statusRequest.value =
+                StatusRequest.error; // Update with error status
 
-            statusRequest = StatusRequest.error;
             Messages.getSnackMessage(
               "Error".tr,
               error.message ?? "Something went wrong".tr, // fallback if null
@@ -184,8 +191,8 @@ class IncompleteTasksController extends GetxController {
             );
           },
           (responseBody) async {
-            statusRequest = StatusRequest.success;
-            update();
+            statusRequest.value = StatusRequest.success;
+
             Messages.getSnackMessage(
               "Success".tr,
               "Task updated Successfully!".tr,
@@ -211,7 +218,7 @@ class IncompleteTasksController extends GetxController {
               where: '${AppStrings.tasksIdColumnName} = ?',
               whereArgs: [task.id],
             );
-            loadTasks();
+            await loadTasks();
           },
         );
       } else {
@@ -224,8 +231,7 @@ class IncompleteTasksController extends GetxController {
     } catch (e) {
       Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
     } finally {
-      statusRequest = StatusRequest.none;
-      update();
+      statusRequest.value = StatusRequest.none;
     }
   }
 
@@ -240,7 +246,6 @@ class IncompleteTasksController extends GetxController {
         );
         result.fold(
           (error) {
-            statusRequest = StatusRequest.error;
             Messages.getSnackMessage(
               "Error".tr,
               error.message ?? "Something went wrong".tr, // fallback if null
@@ -269,7 +274,7 @@ class IncompleteTasksController extends GetxController {
               whereArgs: [taskId],
             );
 
-            loadTasks();
+            await loadTasks();
           },
         );
       } else {
@@ -284,7 +289,7 @@ class IncompleteTasksController extends GetxController {
     }
   }
 
-  void markTaskAsCompleted(TaskModel task) async {
+  Future<void> markTaskAsCompleted(TaskModel task) async {
     final controller = Get.put(AchievementsController());
     task.isCompleted = true;
     await updateTask(task, false);

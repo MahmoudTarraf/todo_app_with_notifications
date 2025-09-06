@@ -98,13 +98,13 @@ class AddTaskController extends GetxController {
       AppStrings.tasksTypeColumnName: taskType.value,
       AppStrings.tasksFrequencyColumnName:
           taskType.value == 'scheduled' ? frequency.value : 'N/A',
-      AppStrings.tasksDatesColumnName:
-          taskType.value == 'scheduled' && frequency.value == 'custom'
-              ? selectedDeadlines.map((e) => e.toIso8601String()).toList()
-              : 'N/A',
+      AppStrings.tasksDatesColumnName: taskType.value == 'scheduled' &&
+              frequency.value == 'custom'
+          ? selectedDeadlines.map((e) => e.toUtc().toIso8601String()).toList()
+          : 'N/A',
       AppStrings.tasksDeadlineColumnName: (taskType.value == 'oneTime' ||
               (taskType.value == 'scheduled' && frequency.value != 'custom'))
-          ? selectedDeadline.value?.toIso8601String() ?? ''
+          ? selectedDeadline.value?.toUtc().toIso8601String() ?? ''
           : 'N/A',
       AppStrings.tasksPriorityColumnName: priority.value,
       AppStrings.tasksIsCompletedColumnName: 0,

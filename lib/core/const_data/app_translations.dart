@@ -21,7 +21,7 @@ class AppTranslations extends Translations {
           'days': 'days',
           ''
                   "Small steps every day lead to big results.":
-              "Small steps every day lead to big results." '',
+              "Small steps every day lead to big results.",
           'See All': 'See All',
           //achievements card
           'Progress: ': 'Progress: ',
@@ -352,8 +352,8 @@ class AppTranslations extends Translations {
           'Streak': 'المتتالية',
           'days': 'أيام',
           ''
-              "Small steps every day lead to big results."
-              '': ' ' "الخطوات الصغيرة كل يوم تؤدي إلى نتائج كبيرة." '',
+                  "Small steps every day lead to big results.":
+              "الخطوات الصغيرة كل يوم تؤدي إلى نتائج كبيرة.",
           'See All': 'مشاهدة الكل',
           //achievements card
           'Progress: ': 'الاكتمال: ',

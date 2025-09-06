@@ -16,10 +16,36 @@ class IncompleteTasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true, // centers the title
         title: Text(
           'My Tasks'.tr,
           style: TextStyles.headingTextStyle(context),
         ),
+        actions: [
+          GetBuilder<IncompleteTasksController>(
+            builder: (controller) {
+              return IconButton(
+                icon: controller.isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : Icon(
+                        color: Theme.of(context).primaryColor,
+                        Icons.refresh,
+                        size: 30,
+                      ),
+                onPressed: controller.isLoading
+                    ? null
+                    : () => controller.refreshTasks(),
+              );
+            },
+          ),
+        ],
       ),
       body: GetBuilder<IncompleteTasksController>(builder: (controller) {
         final incompleteTasks =

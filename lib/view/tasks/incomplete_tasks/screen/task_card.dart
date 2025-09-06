@@ -28,7 +28,6 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final thisUser = Get.find<UserService>().currentUser;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return InkWell(
       onTap: () {
         showModalBottomSheet(

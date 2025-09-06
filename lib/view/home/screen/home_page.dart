@@ -202,7 +202,7 @@ class HomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Text(
-                      'Small steps every day lead to big results.'.tr,
+                      "Small steps every day lead to big results.".tr,
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 16.sp,
@@ -220,11 +220,12 @@ class HomePage extends StatelessWidget {
                       return getNoAchievements();
                     }
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AchievmentsCard(
                           achievments: list,
                         ),
-                        if (list.length > 3)
+                        if (list.length >= 3)
                           TextButton(
                             onPressed: () {
                               Get.toNamed(Routes.achievementsScreen);
