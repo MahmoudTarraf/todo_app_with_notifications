@@ -5,7 +5,6 @@ import 'package:todo_app_with_notifications/core/const_data/app_images.dart';
 import 'package:todo_app_with_notifications/data/model/failed_tasks_model.dart';
 import 'package:todo_app_with_notifications/view/authentication/my_account/widgets/failed_task_card.dart';
 
-import 'package:todo_app_with_notifications/widgets/custom_app_bar.dart';
 import 'package:todo_app_with_notifications/widgets/floating_action_button_widget.dart';
 
 import '../../../../core/const_data/text_styles.dart';
@@ -25,7 +24,11 @@ class TaskStrikesScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
-        appBar: CustomAppBar(title: 'Tasks Strikes'.tr),
+        appBar: AppBar(
+            title: Text(
+          'Tasks Strikes'.tr,
+          style: TextStyles.headingTextStyle(context),
+        )),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat, // ✅ always bottom right
         floatingActionButton: FloatingActionButtonWidget(),

@@ -39,13 +39,17 @@ class AddTaskScreen extends StatelessWidget {
                     ChoiceChip(
                       checkmarkColor: controller.taskType.value == 'oneTime'
                           ? Colors.white
-                          : Colors.black, // unselected
+                          : (Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white70
+                              : Colors.black), // unselected
                       label: Text(
                         'One-Time'.tr,
                         style: TextStyles.smallTextStyle(context).copyWith(
                           color: controller.taskType.value == 'oneTime'
                               ? Colors.white
-                              : Colors.black, // unselected
+                              : (Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white70
+                                  : Colors.black), // unselected
                         ),
                       ),
                       selected: controller.taskType.value == 'oneTime',
@@ -55,13 +59,17 @@ class AddTaskScreen extends StatelessWidget {
                     ChoiceChip(
                       checkmarkColor: controller.taskType.value == 'scheduled'
                           ? Colors.white
-                          : Colors.black, // unselected
+                          : (Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white70
+                              : Colors.black), // unselected
                       label: Text(
                         'Scheduled'.tr,
                         style: TextStyles.smallTextStyle(context).copyWith(
                           color: controller.taskType.value == 'scheduled'
                               ? Colors.white
-                              : Colors.black, // unselected
+                              : (Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white70
+                                  : Colors.black), // unselected
                         ),
                       ),
                       selected: controller.taskType.value == 'scheduled',

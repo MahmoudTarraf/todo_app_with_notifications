@@ -89,9 +89,9 @@ class AppTranslations extends Translations {
           'Pick Deadline': 'Pick Deadline',
           'theDeadline': 'Deadline',
           'Priority': 'Priority',
-          'high': 'high',
-          'medium': 'medium',
-          'low': 'low',
+          'HIGH': 'high',
+          'MEDIUM': 'medium',
+          'LOW': 'low',
           //edit tasks screen
           'Edit Task': 'Edit Task',
           'Confirm Update': 'Confirm Update',
@@ -332,6 +332,7 @@ class AppTranslations extends Translations {
           "ssl_error": "Secure connection failed. Please check your network.",
           "format_error": "Invalid response format from server.",
           "client_error": "Client error occurred. Please try again.",
+          'congrats': 'Congratulations!',
         },
         //*****
         // !Arabic
@@ -351,8 +352,7 @@ class AppTranslations extends Translations {
           'Today’s Completed': 'مهام اكتملت اليوم',
           'Streak': 'المتتالية',
           'days': 'أيام',
-          ''
-                  "Small steps every day lead to big results.":
+          "Small steps every day lead to big results.":
               "الخطوات الصغيرة كل يوم تؤدي إلى نتائج كبيرة.",
           'See All': 'مشاهدة الكل',
           //achievements card
@@ -360,6 +360,7 @@ class AppTranslations extends Translations {
           'Completed': 'مكتمل',
           'Complete your tasks and get awards:': 'أكمل مهامك واحصل على جوائز:',
           "No_Achievements": "🎉 لم تتم إضافة أي إنجازات حتى الآن!",
+          "In Progress": "قيد التنفيذ",
           //floating action button
           'Add_Task_ach': 'إضافة مهمة',
           'Add_Note_ach': 'إضافة ملاحظة',
@@ -367,7 +368,7 @@ class AppTranslations extends Translations {
           "Schedule": "جدول المهام",
           "No tasks scheduled for": "لا توجد مهام مجدولة ليوم",
           //incomplete tasks screen
-          'My Tasks': 'مهامي',
+          'My Tasks': 'مهام قيد التنفيذ',
           'No_tasks_here':
               '🎉 لا توجد مهام هنا! \nانقر فوق الزر وابدأ بإضافة المهام.',
           //tasks card
@@ -420,9 +421,9 @@ class AppTranslations extends Translations {
           'Pick Deadline': 'اختر الموعد النهائي',
           'theDeadline': 'الموعد النهائي',
           'Priority': 'الأولوية',
-          'high': 'عالي',
-          'medium': 'وسط',
-          'low': 'منخفض',
+          'HIGH': 'عالي',
+          'MEDIUM': 'وسط',
+          'LOW': 'منخفض',
           //edit tasks screen
           'Edit Task': 'تعديل المهمة',
           'Confirm Update': 'تأكيد التحديث',
@@ -661,6 +662,7 @@ class AppTranslations extends Translations {
           "ssl_error": "فشل الاتصال الآمن. يرجى التحقق من الشبكة.",
           "format_error": "تنسيق الاستجابة من الخادم غير صالح.",
           "client_error": "حدث خطأ في العميل. حاول مرة أخرى.",
+          'congrats': 'تهانينا!',
         },
       };
 }

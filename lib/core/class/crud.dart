@@ -94,7 +94,7 @@ class Crud {
         );
       }
     } catch (e) {
-      final errorMessage = _cleanErrorMessage(e);
+      final errorMessage = cleanErrorMessage(e);
       return Left(
         RequestError(StatusRequest.serverFailure, message: errorMessage),
       );
@@ -116,7 +116,7 @@ class Crud {
             final decoded = jsonDecode(response.body);
             return Right(decoded);
           } catch (e) {
-            final errorMessage = _cleanErrorMessage(e);
+            final errorMessage = cleanErrorMessage(e);
             return Left(
               RequestError(StatusRequest.serverFailure, message: errorMessage),
             );
@@ -133,7 +133,7 @@ class Crud {
                 var retryBody = jsonDecode(retryRes.body);
                 return Right(retryBody);
               } catch (e) {
-                final errorMessage = _cleanErrorMessage(e);
+                final errorMessage = cleanErrorMessage(e);
                 return Left(
                   RequestError(StatusRequest.serverFailure,
                       message: errorMessage),
@@ -162,7 +162,7 @@ class Crud {
               RequestError(StatusRequest.serverFailure, message: rawMessage.tr),
             );
           } catch (e) {
-            final errorMessage = _cleanErrorMessage(e);
+            final errorMessage = cleanErrorMessage(e);
             return Left(
               RequestError(StatusRequest.serverFailure, message: errorMessage),
             );
@@ -175,7 +175,7 @@ class Crud {
         );
       }
     } catch (e) {
-      final errorMessage = _cleanErrorMessage(e);
+      final errorMessage = cleanErrorMessage(e);
       return Left(
         RequestError(StatusRequest.failure, message: errorMessage),
       );
@@ -260,7 +260,7 @@ class Crud {
         return Left(RequestError(StatusRequest.failure, message: errorMessage));
       }
     } catch (e) {
-      final errorMessage = _cleanErrorMessage(e);
+      final errorMessage = cleanErrorMessage(e);
       return Left(
         RequestError(StatusRequest.failure, message: errorMessage),
       );
@@ -306,7 +306,7 @@ class Crud {
   }
 
   /// ✅ Utility: clean and translate known error messages
-  String _cleanErrorMessage(Object e) {
+  String cleanErrorMessage(Object e) {
     final raw = e.toString();
 
     if (raw.contains("Connection closed")) {

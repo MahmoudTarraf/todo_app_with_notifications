@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_app_with_notifications/core/service/app_link.dart';
 import 'package:todo_app_with_notifications/core/service/routes.dart';
+import 'package:todo_app_with_notifications/core/service/shared_prefrences_keys.dart';
 import 'package:todo_app_with_notifications/core/service/user_service.dart';
 import 'package:todo_app_with_notifications/data/model/failed_tasks_model.dart';
 
@@ -18,6 +22,8 @@ import '../../../tasks/verify_task_completion/screen/animation_screen.dart';
 
 class MyAccountController extends GetxController {
   var failedTasksList = <FailedTaskModel>[];
+  Rx<File?> selectedImage = Rx<File?>(null);
+  final myService = Get.find<MyService>();
   var isLoader = false.obs;
   final DatabaseService _databaseService = DatabaseService.instance;
   var refreshLoading = false.obs;
@@ -314,6 +320,27 @@ class MyAccountController extends GetxController {
       Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
     } finally {
       isLoader.value = false;
+    }
+  }
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile == null) return;
+
+    selectedImage.value = File(pickedFile.path);
+
+    // Save path to SharedPreferences
+    await myService.storeStringData(
+        SharedPrefrencesKeys.profileImagePath, pickedFile.path);
+  }
+
+  Future<void> loadImage() async {
+    final path = myService.getStringData(SharedPrefrencesKeys.profileImagePath);
+    if (path != null && File(path).existsSync()) {
+      selectedImage.value = File(path);
     }
   }
 }

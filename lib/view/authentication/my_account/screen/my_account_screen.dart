@@ -52,7 +52,11 @@ class MyAccountScreen extends StatelessWidget {
           final thisUser =
               Get.find<UserService>().userModel.value; // reactive binding
           if (thisUser == null) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
+            );
           }
           return SafeArea(
             child: SingleChildScrollView(
@@ -66,10 +70,22 @@ class MyAccountScreen extends StatelessWidget {
                   child: IntrinsicHeight(
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 45.r,
-                          backgroundImage: const AssetImage(AppImages.goku),
-                        ),
+                        Obx(() {
+                          final controller = Get.put(MyAccountController());
+
+                          return GestureDetector(
+                            onTap: () => controller.pickImage(),
+                            child: CircleAvatar(
+                              radius: 50.r,
+                              backgroundImage: controller.selectedImage.value !=
+                                      null
+                                  ? FileImage(controller.selectedImage.value!)
+                                  : AssetImage(
+                                      AppImages.goku,
+                                    ) as ImageProvider,
+                            ),
+                          );
+                        }),
                         SizedBox(height: 20.h),
 
                         // Name

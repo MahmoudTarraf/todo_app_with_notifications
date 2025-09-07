@@ -26,6 +26,31 @@ class ScheduleScreen extends StatelessWidget {
           "Schedule".tr,
           style: TextStyles.headingTextStyle(context),
         ),
+        actions: [
+          GetBuilder<IncompleteTasksController>(
+            builder: (controller) {
+              return IconButton(
+                icon: controller.isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : Icon(
+                        color: Theme.of(context).primaryColor,
+                        Icons.refresh,
+                        size: 30,
+                      ),
+                onPressed: controller.isLoading
+                    ? null
+                    : () => controller.refreshTasks(),
+              );
+            },
+          ),
+        ],
       ),
       body: Directionality(
         textDirection: TextDirectionHelper.currentDirection,
@@ -94,47 +119,47 @@ class ScheduleScreen extends StatelessWidget {
 
                 // 🔹 Task List
                 Expanded(
-                  child: GetBuilder<IncompleteTasksController>(
-                    init: IncompleteTasksController(),
-                    builder: (incompleteController) {
-                      controller.loadTasks();
+                  child: Obx(() {
+                    final tasks = controller.filteredTasks;
+                    final incompleteController =
+                        Get.find<IncompleteTasksController>();
 
-                      return controller.filteredTasks.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 150.h,
-                                    child: Image.asset(
-                                      AppImages.noData,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Text(
-                                    "🎉 ${'No tasks scheduled for'.tr} \n${DateFormat('EEEE, MMM d').format(controller.selectedDate.value)}!",
-                                    style: TextStyles.bodyTextStyle(context),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                    if (tasks.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 150.h,
+                              child: Image.asset(
+                                AppImages.noData,
+                                fit: BoxFit.cover,
                               ),
-                            )
-                          : ListView.separated(
-                              padding: const EdgeInsets.all(16),
-                              itemCount: controller.filteredTasks.length,
-                              separatorBuilder: (_, __) =>
-                                  const SizedBox(height: 12),
-                              itemBuilder: (context, index) {
-                                final task = controller.filteredTasks[index];
-                                return TaskCard(
-                                  task: task,
-                                  controller: incompleteController,
-                                );
-                              },
-                            );
-                    },
-                  ),
-                ),
+                            ),
+                            Text(
+                              "🎉 ${'No tasks scheduled for'.tr} \n${DateFormat('EEEE, MMM d').format(controller.selectedDate.value)}!",
+                              style: TextStyles.bodyTextStyle(context),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return ListView.separated(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: tasks.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final task = tasks[index];
+                        return TaskCard(
+                          task: task,
+                          controller: incompleteController,
+                        );
+                      },
+                    );
+                  }),
+                )
               ],
             );
           }),

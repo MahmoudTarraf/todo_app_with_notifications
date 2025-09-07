@@ -14,12 +14,11 @@ class AchievmentsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visibleAchievments = achievments.take(3).toList();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
-      children: List.generate(visibleAchievments.length, (index) {
-        final thisAchievment = visibleAchievments[index];
+      children: List.generate(achievments.length, (index) {
+        final thisAchievment = achievments[index];
         return Card(
           color: Theme.of(context).cardColor, // ✅ adaptive card background
           child: ListTile(
@@ -35,6 +34,7 @@ class AchievmentsCard extends StatelessWidget {
               style: TextStyles.bodyTextStyle(context).copyWith(
                 color: Theme.of(context).colorScheme.primary, // ✅ adaptive
                 fontWeight: FontWeight.w600,
+                fontSize: 18.sp,
               ),
             ),
             subtitle: Column(
@@ -43,6 +43,7 @@ class AchievmentsCard extends StatelessWidget {
                 Text(
                   thisAchievment.subTitle.toString(),
                   style: TextStyle(
+                    fontSize: 16.sp,
                     color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),

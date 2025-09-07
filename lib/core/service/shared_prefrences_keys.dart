@@ -11,5 +11,7 @@ class SharedPrefrencesKeys {
       reminderHour = 'reminder_hour',
       reminderMinute = 'reminder_minute',
       dark = 'dark',
-      light = 'light';
+      light = 'light',
+      profileImagePath = 'profile_image_path',
+      lastShownStreak = 'lastShownStreak';
 }

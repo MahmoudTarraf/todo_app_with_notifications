@@ -13,6 +13,7 @@ import 'package:todo_app_with_notifications/widgets/floating_action_button_widge
 
 import '../../../core/service/user_service.dart';
 import '../../achievments/controller/achievments_controller.dart';
+import '../../authentication/my_account/controller/my_account_controller.dart';
 import '../controller/home_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -106,10 +107,21 @@ class HomePage extends StatelessWidget {
                           onTap: () {
                             Scaffold.of(context).openDrawer();
                           },
-                          child: CircleAvatar(
-                            radius: 30.r,
-                            backgroundImage: AssetImage(AppImages.goku),
-                          ),
+                          child: Obx(() {
+                            final accController =
+                                Get.put(MyAccountController());
+
+                            return CircleAvatar(
+                              radius: 35.r,
+                              backgroundImage:
+                                  accController.selectedImage.value != null
+                                      ? FileImage(
+                                          accController.selectedImage.value!)
+                                      : AssetImage(
+                                          AppImages.goku,
+                                        ) as ImageProvider,
+                            );
+                          }),
                         );
                       }),
                     ],
@@ -201,12 +213,14 @@ class HomePage extends StatelessWidget {
                           .withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
-                    child: Text(
-                      "Small steps every day lead to big results.".tr,
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 16.sp,
-                        color: Theme.of(context).colorScheme.primary,
+                    child: Obx(
+                      () => Text(
+                        achController.motivationalQuote.value,
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
                   ),
@@ -215,17 +229,33 @@ class HomePage extends StatelessWidget {
 
                   // Achievements using Obx
                   Obx(() {
-                    final list = achController.achievementsList;
-                    if (list.isEmpty) {
+                    final all = achController.achievementsList;
+
+                    if (all.isEmpty) {
                       return getNoAchievements();
                     }
+
+                    // Separate completed and in-progress
+                    final completed = all.where((a) => a.isCompleted).toList();
+                    final inProgress =
+                        all.where((a) => !a.isCompleted).toList();
+
+                    // Take up to 3 completed
+                    final list = completed.take(3).toList();
+
+                    // If fewer than 3 → fill with in-progress
+                    if (list.length < 3) {
+                      final remaining = 3 - list.length;
+                      list.addAll(inProgress.take(remaining));
+                    }
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AchievmentsCard(
                           achievments: list,
                         ),
-                        if (list.length >= 3)
+                        if (all.length > 3) // Only show button if more exist
                           TextButton(
                             onPressed: () {
                               Get.toNamed(Routes.achievementsScreen);
@@ -233,9 +263,11 @@ class HomePage extends StatelessWidget {
                             child: Text(
                               'See All'.tr,
                               style: TextStyle(
-                                color: Colors.deepPurple,
-                                fontSize: 18.sp,
+                                color: const Color.fromARGB(255, 128, 102, 175),
+                                fontSize: 20.sp,
                                 decoration: TextDecoration.underline,
+                                decorationColor:
+                                    Color.fromARGB(255, 103, 74, 155),
                               ),
                             ),
                           ),

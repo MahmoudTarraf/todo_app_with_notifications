@@ -73,7 +73,8 @@ class TaskCard extends StatelessWidget {
                         label: Text(
                           "${'Update'.tr} (${thisUser.remainingUpdates})",
                           style: TextStyle(
-                              color: isDark ? Colors.black : Colors.white),
+                            color: isDark ? Colors.black : Colors.white,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: isDark
@@ -119,8 +120,7 @@ class TaskCard extends StatelessWidget {
                         ),
                         label: Text(
                           "${'Delete'.tr} (${thisUser.remainingDeletes})",
-                          style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:

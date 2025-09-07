@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
-
+import 'package:todo_app_with_notifications/core/service/shared_prefrences_keys.dart';
 import '../../../core/class/crud.dart';
+import '../../../core/const_data/app_animations.dart';
 import '../../../core/const_data/app_colors.dart';
 import '../../../core/service/app_link.dart';
 import '../../../core/service/messages.dart';
+import '../../../core/service/my_service.dart';
 import '../../../core/service/network_manager.dart';
+import '../../../widgets/congrats_screen.dart';
 
 class HomeController extends GetxController {
   int selectedIndex = 2;
@@ -13,34 +16,37 @@ class HomeController extends GetxController {
   var streak = 0.obs;
   var upcomingTaskCount = 0.obs;
   var upcomingTaskText = ''.obs;
+
   @override
   void onInit() {
     getHomeData();
     super.onInit();
   }
 
-  var isLoading = false.obs;
   updateIndex(int value) {
     selectedIndex = value;
     update();
   }
 
   Future<void> getHomeData() async {
+    print("is here home data");
+
     try {
       if (await NetworkManager().isOnline()) {
-        isLoading.value = true;
-
         final result = await Crud().getData(AppLink.getHomeData);
 
         result.fold(
           (error) {
+            print(error);
             Messages.getSnackMessage(
               "Error".tr,
               error.toString(),
               ColorsManager.primary,
             );
           },
-          (responseBody) {
+          (responseBody) async {
+            print(responseBody);
+
             tasksDueToday.value = responseBody['tasksDueToday'] ?? 0;
             tasksCompleted.value = responseBody['tasksCompleted'] ?? 0;
             streak.value = responseBody['streak'] ?? 0;
@@ -48,7 +54,19 @@ class HomeController extends GetxController {
 
             // Reset text in case no deadline
             upcomingTaskText.value = '';
-
+            // 🎯 Check if reward exists
+            final myService = Get.find<MyService>();
+            final lastShownStreak =
+                myService.getIntData(SharedPrefrencesKeys.lastShownStreak) ?? 0;
+            if (responseBody['reward'] != null &&
+                streak.value > lastShownStreak) {
+              Get.to(() => CongratsScreen(
+                    animationName: AppAnimations.congratulations,
+                    streak: streak.value,
+                  ));
+              await myService.storeIntData(
+                  SharedPrefrencesKeys.lastShownStreak, streak.value);
+            }
             final deadline = responseBody['nextDeadline'];
             if (deadline != null && deadline.toString().isNotEmpty) {
               final nextDate = DateTime.tryParse(deadline);
@@ -101,8 +119,6 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
-    } finally {
-      isLoading.value = false;
     }
   }
 }

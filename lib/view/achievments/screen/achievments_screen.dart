@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:todo_app_with_notifications/core/service/user_service.dart';
 
 import '../../../core/const_data/app_images.dart';
 import '../../../core/const_data/text_styles.dart';
@@ -20,12 +21,38 @@ class AchievmentsScreen extends StatelessWidget {
           'My Achievements'.tr,
           style: TextStyles.headingTextStyle(context),
         ),
+        actions: [
+          Obx(
+            () {
+              return IconButton(
+                icon: achController.isLoading.value
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : Icon(
+                        color: Theme.of(context).primaryColor,
+                        Icons.refresh,
+                        size: 30,
+                      ),
+                onPressed: achController.isLoading.value
+                    ? null
+                    : () => achController.getAchievements(
+                        Get.find<UserService>().currentUser!.id),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(20.r),
         child: Obx(() {
-          final list = achController.achievementsList;
-          if (list.isEmpty) {
+          final all = achController.achievementsList;
+          if (all.isEmpty) {
             return Center(
               child: Column(
                 children: [
@@ -48,12 +75,46 @@ class AchievmentsScreen extends StatelessWidget {
               ),
             );
           }
-          return Column(
-            children: [
-              AchievmentsCard(
-                achievments: list,
-              ),
-            ],
+
+          // Split into completed and in-progress
+          final completed = all.where((a) => a.isCompleted).toList();
+          final inProgress = all.where((a) => !a.isCompleted).toList();
+
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (completed.isNotEmpty) ...[
+                  Text(
+                    '${"Completed".tr} :',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.green.shade300
+                          : Colors.green.shade600,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  AchievmentsCard(achievments: completed),
+                  SizedBox(height: 20.h),
+                ],
+                if (inProgress.isNotEmpty) ...[
+                  Text(
+                    '${"In Progress".tr} :',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.deepPurple.shade200
+                          : Colors.deepPurple.shade600,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  AchievmentsCard(achievments: inProgress),
+                ],
+              ],
+            ),
           );
         }),
       ),

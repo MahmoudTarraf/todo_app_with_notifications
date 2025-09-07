@@ -38,10 +38,21 @@ class AppDrawer extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 40.r,
-                    backgroundImage: AssetImage(AppImages.goku),
-                  ),
+                  Obx(() {
+                    final controller = Get.put(MyAccountController());
+
+                    return GestureDetector(
+                      onTap: () => controller.pickImage(),
+                      child: CircleAvatar(
+                        radius: 40.r,
+                        backgroundImage: controller.selectedImage.value != null
+                            ? FileImage(controller.selectedImage.value!)
+                            : AssetImage(
+                                AppImages.goku,
+                              ) as ImageProvider,
+                      ),
+                    );
+                  }),
                   SizedBox(width: 20.h),
                   Expanded(
                     child: Column(

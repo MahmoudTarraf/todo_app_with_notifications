@@ -59,32 +59,37 @@ class HomeScreen extends StatelessWidget {
             animationCurve: Curves.bounceIn,
             animationDuration: const Duration(seconds: 1),
             color: Theme.of(context).primaryColor, // dynamic icon color
-            height: 50.h,
+            height: 60.h,
             buttonBackgroundColor: Theme.of(context).primaryColor,
             backgroundColor: Colors.transparent,
             index: controller.selectedIndex,
             onTap: (int index) {
               controller.updateIndex(index);
             },
-            items: const [
+            items: [
               Icon(
-                Icons.list_alt,
+                Icons.highlight_off_rounded,
                 color: ColorsManager.black,
+                size: 35.r,
               ),
               Icon(
                 Icons.timeline_outlined,
                 color: ColorsManager.black,
+                size: 35.r,
               ),
               Icon(
                 Icons.home,
+                size: 35.r,
                 color: ColorsManager.black,
               ),
               Icon(
                 Icons.note,
+                size: 35.r,
                 color: ColorsManager.black,
               ),
               Icon(
                 Icons.done_all_outlined,
+                size: 35.r,
                 color: ColorsManager.black,
               ),
             ],

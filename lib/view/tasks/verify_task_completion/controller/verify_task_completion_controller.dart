@@ -87,22 +87,23 @@ class VerifyTaskCompletionController extends GetxController {
             ));
         final streamedResponse = await request.send();
         final response = await http.Response.fromStream(streamedResponse);
-        safeCloseAnimation();
+
         if (response.statusCode == 200) {
+          safeCloseAnimation();
           final data = jsonDecode(response.body);
           parseResponse(data['description']);
 
           if (status == 'Completed' && confidence >= 80) {
-            final IncompleteTasksController incompleteTasksController =
-                Get.put(IncompleteTasksController());
-
-            await incompleteTasksController.markTaskAsCompleted(task);
             Get.off(() => AnimationScreen(
                   animationName: AppAnimations.congratulations,
                   analysisText: explanation,
                   isLoading: false,
                   isCompleted: true,
                 ));
+            final IncompleteTasksController incompleteTasksController =
+                Get.put(IncompleteTasksController());
+
+            await incompleteTasksController.markTaskAsCompleted(task);
           } else {
             // If status is 'Not completed' OR confidence < 80
             Get.off(() => AnimationScreen(
@@ -113,6 +114,8 @@ class VerifyTaskCompletionController extends GetxController {
                 ));
           }
         } else {
+          safeCloseAnimation();
+
           Messages.getSnackMessage(
             'Error'.tr,
             '${"Server error:".tr} ${response.statusCode}',
@@ -121,6 +124,8 @@ class VerifyTaskCompletionController extends GetxController {
           Get.offNamed(Routes.incompleteTasksScreen);
         }
       } else {
+        safeCloseAnimation();
+
         Messages.getSnackMessage(
           'No Internet'.tr,
           'Please check your connection and try again.'.tr,
