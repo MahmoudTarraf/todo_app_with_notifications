@@ -59,7 +59,6 @@ class ScheduleController extends GetxController {
                     conflictAlgorithm: ConflictAlgorithm.replace,
                   );
                 } catch (e) {
-                  print('Task parse error: $e');
                   Messages.getSnackMessage(
                     'Something went wrong'.tr,
                     'Loading Tasks from local Database.'.tr,

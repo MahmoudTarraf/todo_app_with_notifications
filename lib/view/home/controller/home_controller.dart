@@ -29,15 +29,12 @@ class HomeController extends GetxController {
   }
 
   Future<void> getHomeData() async {
-    print("is here home data");
-
     try {
       if (await NetworkManager().isOnline()) {
         final result = await Crud().getData(AppLink.getHomeData);
 
         result.fold(
           (error) {
-            print(error);
             Messages.getSnackMessage(
               "Error".tr,
               error.toString(),
@@ -45,8 +42,6 @@ class HomeController extends GetxController {
             );
           },
           (responseBody) async {
-            print(responseBody);
-
             tasksDueToday.value = responseBody['tasksDueToday'] ?? 0;
             tasksCompleted.value = responseBody['tasksCompleted'] ?? 0;
             streak.value = responseBody['streak'] ?? 0;
