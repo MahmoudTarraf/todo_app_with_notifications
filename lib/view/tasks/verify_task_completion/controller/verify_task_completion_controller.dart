@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:todo_app_with_notifications/core/const_data/app_animations.dart';
 import 'package:todo_app_with_notifications/core/service/app_link.dart';
 import 'package:todo_app_with_notifications/data/model/task_model.dart';
@@ -25,14 +26,32 @@ class VerifyTaskCompletionController extends GetxController {
   File? selectedImage;
 
   Future<void> pickImage() async {
+    // 1️⃣ Check and request permission
+    PermissionStatus status = await Permission.photos.status;
+
+    if (!status.isGranted) {
+      status = await Permission.photos.request();
+      if (!status.isGranted) {
+        // Permission denied
+        Messages.getSnackMessage(
+          'Permission Denied'.tr,
+          'You need to allow gallery access to pick an image.'.tr,
+          ColorsManager.primary,
+        );
+        return;
+      }
+    }
+
+    // 2️⃣ Pick image
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile == null) {
-      return;
+      return; // User cancelled
     }
 
+    // 3️⃣ Save selected image
     selectedImage = File(pickedFile.path);
     update(); // Notify UI
   }

@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:todo_app_with_notifications/core/service/routes.dart';
 
 class NotificationService {
@@ -17,12 +17,8 @@ class NotificationService {
 
   /// Call this from InitialBindings
   Future<void> init() async {
-    // 🔹 Ask notification permission (needed for Android 13+ & iOS)
-    await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    // 🔹 Handle permissions
+    await _handleNotificationPermission();
 
     // 🔹 Local notifications initialization
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -35,7 +31,6 @@ class NotificationService {
       initializationSettings,
       onDidReceiveNotificationResponse: (details) {
         debugPrint("Notification clicked: ${details.payload}");
-
         if (details.payload != null) {
           final Map<String, dynamic> data =
               Map<String, dynamic>.from(jsonDecode(details.payload!));
@@ -51,7 +46,7 @@ class NotificationService {
               Get.toNamed(Routes.myAccountScreen);
               break;
             default:
-              Get.toNamed(Routes.incompleteTasksScreen); // fallback
+              Get.toNamed(Routes.incompleteTasksScreen);
           }
         }
       },
@@ -75,15 +70,53 @@ class NotificationService {
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenedApp);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    // 🔹 Print token (for testing: copy into Firebase console to send push)
+    // 🔹 Print token (for testing)
     String? token = await _messaging.getToken();
     debugPrint("FCM Token: $token");
+  }
+
+  // 🔹 Permission handler
+  Future<void> _handleNotificationPermission() async {
+    PermissionStatus status = await Permission.notification.status;
+
+    if (!status.isGranted) {
+      // Request permission
+      status = await Permission.notification.request();
+
+      if (!status.isGranted) {
+        debugPrint("Notification permission denied");
+
+        // If permanently denied, open app settings
+        if (status.isPermanentlyDenied) {
+          // Show a dialog guiding the user
+          Get.defaultDialog(
+            title: "Permission Required".tr,
+            middleText:
+                "Notification permission is required to receive task alerts. Please enable it in app settings."
+                    .tr,
+            textConfirm: "Open Settings".tr,
+            textCancel: "Cancel".tr,
+            onConfirm: () {
+              openAppSettings();
+              Get.back();
+            },
+            onCancel: () => Get.back(),
+          );
+        }
+      }
+    }
+
+    // FCM-specific permissions (iOS & Android 13+)
+    await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   // Foreground message
   void _onMessage(RemoteMessage message) {
     debugPrint("Foreground message: ${message.notification?.title}");
-
     if (message.notification != null) {
       _showLocalNotification(message);
     }
@@ -92,7 +125,6 @@ class NotificationService {
   // When notification is tapped and app opens
   void _onMessageOpenedApp(RemoteMessage message) {
     debugPrint("Notification tapped (FCM): ${message.notification?.title}");
-
     final type = message.data['type'] ?? 'reminder';
 
     switch (type) {
@@ -119,7 +151,7 @@ class NotificationService {
       channelDescription: 'Channel for task related notifications',
       importance: Importance.max,
       priority: Priority.high,
-      icon: '@drawable/ic_stat_list_alt', // <-- custom icon
+      icon: '@drawable/ic_stat_list_alt',
     );
 
     const NotificationDetails platformDetails =

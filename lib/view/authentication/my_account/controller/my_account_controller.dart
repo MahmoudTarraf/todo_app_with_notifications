@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_app_with_notifications/core/service/app_link.dart';
 import 'package:todo_app_with_notifications/core/service/routes.dart';
@@ -324,15 +325,41 @@ class MyAccountController extends GetxController {
   }
 
   Future<void> pickImage() async {
+    // 1️⃣ Check permission
+    PermissionStatus status;
+    if (Platform.isAndroid) {
+      status = await Permission.storage.status;
+    } else {
+      status = await Permission.photos.status;
+    }
+
+    if (!status.isGranted) {
+      status = Platform.isAndroid
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
+
+      if (!status.isGranted) {
+        // Permission denied
+        Messages.getSnackMessage(
+          'Permission Denied'.tr,
+          'You need to allow gallery access to pick an image.'.tr,
+          ColorsManager.primary,
+        );
+        return;
+      }
+    }
+
+    // 2️⃣ Pick image
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile == null) return;
+    if (pickedFile == null) return; // User cancelled
 
+    // 3️⃣ Update selected image
     selectedImage.value = File(pickedFile.path);
 
-    // Save path to SharedPreferences
+    // 4️⃣ Save path to SharedPreferences
     await myService.storeStringData(
         SharedPrefrencesKeys.profileImagePath, pickedFile.path);
   }

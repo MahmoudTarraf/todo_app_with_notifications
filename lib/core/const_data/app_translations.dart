@@ -333,6 +333,13 @@ class AppTranslations extends Translations {
           "format_error": "Invalid response format from server.",
           "client_error": "Client error occurred. Please try again.",
           'congrats': 'Congratulations!',
+          'Permission Denied': 'Permission Denied',
+          'You need to allow gallery access to pick an image.':
+              'You need to allow gallery access to pick an image.',
+          "Permission Required": "Permission Required",
+          "Notification permission is required to receive task alerts. Please enable it in app settings.":
+              "Notification permission is required to receive task alerts. Please enable it in app settings.",
+          "Open Settings": "Open Settings",
         },
         //*****
         // !Arabic
@@ -663,6 +670,13 @@ class AppTranslations extends Translations {
           "format_error": "تنسيق الاستجابة من الخادم غير صالح.",
           "client_error": "حدث خطأ في العميل. حاول مرة أخرى.",
           'congrats': 'تهانينا!',
+          'Permission Denied': 'تم رفض الإذن',
+          'You need to allow gallery access to pick an image.':
+              'يجب عليك السماح بالوصول إلى المعرض لاختيار صورة.',
+          "Permission Required": "مطلوب إذن المستخدم",
+          "Notification permission is required to receive task alerts. Please enable it in app settings.":
+              "يلزم الحصول على إذن الإشعارات لتلقي تنبيهات المهام. يُرجى تفعيله في إعدادات التطبيق.",
+          "Open Settings": "افتح الإعدادات",
         },
       };
 }
