@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_with_notifications/core/class/status_request.dart';
+import 'package:todo_app_with_notifications/core/utils/show_connectivity_dialouge.dart';
 import 'package:todo_app_with_notifications/view/tasks/incomplete_tasks/controller/incomplete_tasks_controller.dart';
 import '../../../../../core/const_data/text_styles.dart';
 import '../controller/add_task_controller.dart';
@@ -14,6 +15,9 @@ class AddTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showNoticeDialog(context);
+    });
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(

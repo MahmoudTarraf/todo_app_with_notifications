@@ -14,7 +14,13 @@ import '../../tasks/incomplete_tasks/screen/task_card.dart';
 import '../controller/schedule_controller.dart';
 
 class ScheduleScreen extends StatelessWidget {
-  final ScheduleController controller = Get.put(ScheduleController());
+  final ScheduleController controller = Get.put(
+    ScheduleController(),
+  );
+  final IncompleteTasksController incompleteTasksController = Get.put(
+    IncompleteTasksController(),
+    permanent: true,
+  );
 
   ScheduleScreen({super.key});
 

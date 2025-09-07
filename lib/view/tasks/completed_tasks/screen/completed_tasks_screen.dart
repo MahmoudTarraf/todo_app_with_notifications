@@ -66,10 +66,7 @@ class CompletedTasksScreen extends StatelessWidget {
                   ),
                   Text(
                     "✅ ${'No completed tasks yet.'.tr}\n${'Finish some tasks and they will appear here.'.tr}",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black45,
-                    ),
+                    style: TextStyles.bodyTextStyle(context),
                     textAlign: TextAlign.center,
                   ),
                 ],

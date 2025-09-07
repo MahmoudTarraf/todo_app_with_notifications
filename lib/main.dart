@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:todo_app_with_notifications/core/const_data/app_colors.dart';
 import 'package:todo_app_with_notifications/core/const_data/app_translations.dart';
+import 'package:todo_app_with_notifications/core/service/messages.dart';
 import 'package:todo_app_with_notifications/core/service/my_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_with_notifications/core/service/shared_prefrences_keys.dart';
@@ -11,6 +13,7 @@ import 'core/const_data/my_theme.dart';
 import 'core/service/firebase_options.dart';
 import 'core/service/routes.dart';
 import 'core/utils/check_firebase_connection.dart';
+import 'core/utils/show_connectivity_dialouge.dart';
 import 'routes.dart';
 import 'view/settings/controller/settings_controller.dart';
 
@@ -24,38 +27,30 @@ void main() async {
 
   await initialService();
   Get.put(SettingsController(), permanent: true);
+  final myService = Get.find<MyService>();
+  bool? isNotificationsOn = myService.getBoolData(
+    SharedPrefrencesKeys.notifications,
+  );
 
-  // 🔹 Check Firebase connectivity
-  final bool canReachFirebase = await checkFirebaseConnection();
-  if (!canReachFirebase) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.defaultDialog(
-        barrierDismissible: false, // User cannot dismiss by tapping outside
-        title: Get.locale?.languageCode == 'ar'
-            ? 'مشكلة في الاتصال'
-            : 'Connectivity Issue',
-        middleText: Get.locale?.languageCode == 'ar'
-            ? 'قد لا تعمل الإشعارات في منطقتك. يُرجى تفعيل VPN مثل ProtonVPN لتلقي التحديثات.'
-            : 'Notifications may not work in your region. Please turn on a VPN like ProtonVPN to receive updates.',
-        textConfirm:
-            Get.locale?.languageCode == 'ar' ? 'إعادة المحاولة' : 'Retry',
-        textCancel: Get.locale?.languageCode == 'ar' ? 'خروج' : 'Exit',
-        confirmTextColor: Colors.white,
-        cancelTextColor: Colors.purple,
-        onConfirm: () async {
-          Get.back(); // close dialog
-          final reachable = await checkFirebaseConnection();
-          if (!reachable) {
-            // still not reachable, show again
-            main(); // re-run main to show dialog again
-          }
-        },
-        onCancel: () {
-          // Exit the app
-          SystemNavigator.pop();
-        },
-      );
-    });
+  if (isNotificationsOn == true) {
+    // 🔹 Check Firebase connectivity
+    final bool canReachFirebase = await checkFirebaseConnection();
+    if (!canReachFirebase) {
+      showConnectivityDialog();
+    } else {
+      // 🔹 Corrected snack messages
+      Get.locale?.languageCode == 'ar'
+          ? Messages.getSnackMessage(
+              'ملاحظة',
+              'الإشعارات تعمل الآن!',
+              ColorsManager.cartColor,
+            )
+          : Messages.getSnackMessage(
+              'Note',
+              'Notifications Now Working!',
+              ColorsManager.cartColor,
+            );
+    }
   }
 
   final initialRoute =
