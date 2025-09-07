@@ -26,20 +26,29 @@ class VerifyTaskCompletionController extends GetxController {
   File? selectedImage;
 
   Future<void> pickImage() async {
-    // 1️⃣ Check and request permission
     PermissionStatus status = await Permission.photos.status;
+
+    if (Platform.isAndroid) {
+      status = await Permission.storage.status; // for Android <13
+      if (!status.isGranted) {
+        status = await Permission.storage.request();
+      }
+    } else {
+      status = await Permission.photos.status; // for iOS or Android 13+
+      if (!status.isGranted) {
+        status = await Permission.photos.request();
+      }
+    }
 
     if (!status.isGranted) {
       status = await Permission.photos.request();
-      if (!status.isGranted) {
-        // Permission denied
-        Messages.getSnackMessage(
-          'Permission Denied'.tr,
-          'You need to allow gallery access to pick an image.'.tr,
-          ColorsManager.primary,
-        );
-        return;
-      }
+
+      Messages.getSnackMessage(
+        'Permission Denied'.tr,
+        'You need to allow gallery access to pick an image.'.tr,
+        ColorsManager.primary,
+      );
+      return;
     }
 
     // 2️⃣ Pick image

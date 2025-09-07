@@ -325,49 +325,41 @@ class MyAccountController extends GetxController {
   }
 
   Future<void> pickImage() async {
-    // 1️⃣ Check permission
-    PermissionStatus status;
+    PermissionStatus status = await Permission.photos.status;
+
     if (Platform.isAndroid) {
-      status = await Permission.storage.status;
-    } else {
-      status = await Permission.photos.status;
-    }
-
-    if (!status.isGranted) {
-      status = Platform.isAndroid
-          ? await Permission.storage.request()
-          : await Permission.photos.request();
-
+      status = await Permission.storage.status; // for Android <13
       if (!status.isGranted) {
-        // Permission denied
-        Messages.getSnackMessage(
-          'Permission Denied'.tr,
-          'You need to allow gallery access to pick an image.'.tr,
-          ColorsManager.primary,
-        );
-        return;
+        status = await Permission.storage.request();
+      }
+    } else {
+      status = await Permission.photos.status; // for iOS or Android 13+
+      if (!status.isGranted) {
+        status = await Permission.photos.request();
       }
     }
 
-    // 2️⃣ Pick image
+    if (!status.isGranted) {
+      status = await Permission.photos.request();
+
+      Messages.getSnackMessage(
+        'Permission Denied'.tr,
+        'You need to allow gallery access to pick an image.'.tr,
+        ColorsManager.primary,
+      );
+      return;
+    }
+
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile == null) return; // User cancelled
+    if (pickedFile == null) return;
 
-    // 3️⃣ Update selected image
     selectedImage.value = File(pickedFile.path);
 
-    // 4️⃣ Save path to SharedPreferences
+    // Save path to SharedPreferences
     await myService.storeStringData(
         SharedPrefrencesKeys.profileImagePath, pickedFile.path);
-  }
-
-  Future<void> loadImage() async {
-    final path = myService.getStringData(SharedPrefrencesKeys.profileImagePath);
-    if (path != null && File(path).existsSync()) {
-      selectedImage.value = File(path);
-    }
   }
 }
