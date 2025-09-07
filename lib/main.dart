@@ -28,9 +28,17 @@ void main() async {
   await initialService();
   Get.put(SettingsController(), permanent: true);
   final myService = Get.find<MyService>();
+
+  // 🔹 Check if notifications setting exists
   bool? isNotificationsOn = myService.getBoolData(
     SharedPrefrencesKeys.notifications,
   );
+
+  // 🔹 If null, set it to true for the first time
+  if (isNotificationsOn == null) {
+    await myService.storeBoolData(SharedPrefrencesKeys.notifications, true);
+    isNotificationsOn = true;
+  }
 
   if (isNotificationsOn == true) {
     // 🔹 Check Firebase connectivity
