@@ -8,6 +8,7 @@ import 'package:intro_views_flutter/intro_views_flutter.dart';
 import '../../../../core/const_data/app_images.dart';
 import '../../../../core/const_data/text_styles.dart';
 import '../../../../core/service/routes.dart';
+import '../../../../core/utils/text_direction_helper.dart';
 import '../../../../initial_screen_controller.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -23,6 +24,7 @@ class LandingScreen extends StatelessWidget {
         pageColor: theme.scaffoldBackgroundColor, // dynamic
         bubble: Image.asset(AppImages.multipleTasks),
         body: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           'easAdd'.tr,
           style: TextStyles.bodyTextStyle(context).copyWith(
             color: theme.textTheme.bodyLarge?.color, // dynamic
@@ -30,6 +32,7 @@ class LandingScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         title: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           'Manage Your Tasks'.tr,
           style: TextStyles.headingTextStyle(context).copyWith(
             color: theme.textTheme.headlineMedium?.color, // dynamic
@@ -43,6 +46,7 @@ class LandingScreen extends StatelessWidget {
         pageColor: theme.scaffoldBackgroundColor,
         bubble: Image.asset(AppImages.planTask),
         body: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           'planTasks'.tr,
           style: TextStyles.bodyTextStyle(context).copyWith(
             color: theme.textTheme.bodyLarge?.color,
@@ -50,6 +54,7 @@ class LandingScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         title: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           'Stay Organized'.tr,
           style: TextStyles.headingTextStyle(context).copyWith(
             color: theme.textTheme.headlineMedium?.color,
@@ -63,6 +68,7 @@ class LandingScreen extends StatelessWidget {
         pageColor: theme.scaffoldBackgroundColor,
         bubble: Image.asset(AppImages.taskNotification),
         body: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           'neverMiss'.tr,
           style: TextStyles.bodyTextStyle(context).copyWith(
             color: theme.textTheme.bodyLarge?.color,
@@ -70,6 +76,7 @@ class LandingScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         title: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           'Smart Notifications'.tr,
           style: TextStyles.headingTextStyle(context).copyWith(
             color: theme.textTheme.headlineMedium?.color,

@@ -5,6 +5,7 @@ import 'package:todo_app_with_notifications/core/service/user_service.dart';
 
 import '../../../core/const_data/app_images.dart';
 import '../../../core/const_data/text_styles.dart';
+import '../../../core/utils/text_direction_helper.dart';
 import '../controller/achievments_controller.dart';
 import 'achievments_card.dart';
 
@@ -27,8 +28,8 @@ class AchievmentsScreen extends StatelessWidget {
               return IconButton(
                 icon: achController.isLoading.value
                     ? SizedBox(
-                        width: 20,
-                        height: 20,
+                        width: 20.w,
+                        height: 20.h,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           color: Theme.of(context).primaryColor,
@@ -42,7 +43,8 @@ class AchievmentsScreen extends StatelessWidget {
                 onPressed: achController.isLoading.value
                     ? null
                     : () => achController.getAchievements(
-                        Get.find<UserService>().currentUser!.id),
+                          Get.find<UserService>().currentUser!.id,
+                        ),
               );
             },
           ),
@@ -68,8 +70,12 @@ class AchievmentsScreen extends StatelessWidget {
                   ),
                   Text(
                     "No_Achievements".tr,
-                    style: const TextStyle(fontSize: 16, color: Colors.black45),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.black45,
+                    ),
                     textAlign: TextAlign.center,
+                    textDirection: TextDirectionHelper.currentDirection,
                   ),
                 ],
               ),
@@ -86,6 +92,7 @@ class AchievmentsScreen extends StatelessWidget {
               children: [
                 if (completed.isNotEmpty) ...[
                   Text(
+                    textDirection: TextDirectionHelper.currentDirection,
                     '${"Completed".tr} :',
                     style: TextStyle(
                       fontSize: 20.sp,
@@ -101,6 +108,7 @@ class AchievmentsScreen extends StatelessWidget {
                 ],
                 if (inProgress.isNotEmpty) ...[
                   Text(
+                    textDirection: TextDirectionHelper.currentDirection,
                     '${"In Progress".tr} :',
                     style: TextStyle(
                       fontSize: 20.sp,

@@ -37,7 +37,7 @@ class HomeController extends GetxController {
           (error) {
             Messages.getSnackMessage(
               "Error".tr,
-              error.toString(),
+              error.toString().tr,
               ColorsManager.primary,
             );
           },

@@ -56,7 +56,7 @@ class AchievementsController extends GetxController {
           (error) async {
             Messages.getSnackMessage(
               "Error".tr,
-              error.toString(),
+              error.toString().tr,
               ColorsManager.primary,
             );
           },
@@ -73,7 +73,8 @@ class AchievementsController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     }
   }
 
@@ -154,7 +155,8 @@ class AchievementsController extends GetxController {
       }
     } catch (e) {
       await loadAchievementsFromLocalDB();
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       isLoading.value = false;
     }
@@ -182,8 +184,8 @@ class AchievementsController extends GetxController {
           (responseBody) async {
             if (responseBody["message"] != null) {
               Messages.getSnackMessage(
-                "Achievements",
-                responseBody["message"],
+                "Achievements".tr,
+                responseBody["message"].tr,
                 ColorsManager.green,
               );
             }
@@ -203,7 +205,8 @@ class AchievementsController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     }
   }
 

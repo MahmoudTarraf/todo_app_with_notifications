@@ -121,7 +121,7 @@ class LoginController extends GetxController {
     } catch (e) {
       statusRequest = StatusRequest.serverFailure; // General failure status
       update();
-      Messages.getSnackMessage('Error'.tr, e.toString(), Colors.red);
+      Messages.getSnackMessage('Error'.tr, e.toString().tr, Colors.red);
     } finally {
       statusRequest = StatusRequest.none;
       update();

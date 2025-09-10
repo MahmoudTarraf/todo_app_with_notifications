@@ -58,7 +58,7 @@ class PasswordController extends GetxController {
           (responseBody) async {
             Messages.getSnackMessage(
               "Success".tr,
-              responseBody["message"] ?? "Password changed successfully".tr,
+              responseBody["message"].tr ?? "Password changed successfully".tr,
               ColorsManager.green,
             );
             final myService = Get.find<MyService>();
@@ -68,7 +68,8 @@ class PasswordController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       isLoading = false;
       update();
@@ -105,7 +106,7 @@ class PasswordController extends GetxController {
           (responseBody) async {
             Messages.getSnackMessage(
               "OTP Sent".tr,
-              responseBody["message"] ?? "Check your email for the OTP".tr,
+              responseBody["message"].tr ?? "Check your email for the OTP".tr,
               ColorsManager.green,
             );
             // if success → go to OTP screen
@@ -114,7 +115,8 @@ class PasswordController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       isLoading = false;
       update();
@@ -129,7 +131,10 @@ class PasswordController extends GetxController {
         newPassword.isEmpty ||
         (newPassword.length < 6)) {
       Messages.getSnackMessage(
-          "Follow These Rules:".tr, 'resPassRules', ColorsManager.primary);
+        "Follow These Rules:".tr,
+        'resPassRules',
+        ColorsManager.primary,
+      );
       return;
     }
     try {
@@ -158,7 +163,7 @@ class PasswordController extends GetxController {
           (responseBody) async {
             Messages.getSnackMessage(
               "Success".tr,
-              responseBody["message"] ?? "Password reset successful".tr,
+              responseBody["message"].tr ?? "Password reset successful".tr,
               ColorsManager.green,
             );
             final myService = Get.find<MyService>();
@@ -168,7 +173,8 @@ class PasswordController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       isLoading = false;
       update();

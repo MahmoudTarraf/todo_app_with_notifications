@@ -52,17 +52,29 @@ class SettingsScreen extends StatelessWidget {
               ListTile(
                 title: Text('language'.tr,
                     style: TextStyles.bodyTextStyle(context)),
-                trailing: DropdownButton<String>(
-                  value: controller.language.value,
-                  items: const [
-                    DropdownMenuItem(value: 'en', child: Text('English')),
-                    DropdownMenuItem(value: 'ar', child: Text('العربية')),
-                  ],
-                  onChanged: (value) {
-                    if (value != null) controller.setLanguage(value);
-                  },
-                ),
+                trailing: Obx(() => AbsorbPointer(
+                      absorbing: controller
+                          .isUpdatingLanguage.value, // disable when updating
+                      child: DropdownButton<String>(
+                        value: controller.language.value,
+                        items: const [
+                          DropdownMenuItem(value: 'en', child: Text('English')),
+                          DropdownMenuItem(value: 'ar', child: Text('العربية')),
+                        ],
+                        onChanged: (value) async {
+                          if (value != null &&
+                              !controller.isUpdatingLanguage.value) {
+                            controller.isUpdatingLanguage.value =
+                                true; // start updating
+                            await controller.setLanguage(value);
+                            controller.isUpdatingLanguage.value =
+                                false; // done updating
+                          }
+                        },
+                      ),
+                    )),
               ),
+
               Divider(),
 
               // 🔹 Notifications

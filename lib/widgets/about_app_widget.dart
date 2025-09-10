@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo_app_with_notifications/widgets/custom_app_bar.dart';
 
 import '../core/const_data/text_styles.dart';
+import '../core/utils/text_direction_helper.dart';
 
 class AboutAppWidget extends StatelessWidget {
   const AboutAppWidget({super.key});
@@ -67,10 +68,12 @@ Widget rowBuilder(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
+            textDirection: TextDirectionHelper.currentDirection,
             name,
             style: TextStyles.bodyTextStyle(context),
           ),
           Text(
+            textDirection: TextDirectionHelper.currentDirection,
             value,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
@@ -96,6 +99,7 @@ Widget questionAnswer(String question, String answer) {
           ),
           child: Center(
             child: Text(
+              textDirection: TextDirectionHelper.currentDirection,
               question,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
@@ -108,6 +112,7 @@ Widget questionAnswer(String question, String answer) {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h),
           child: Text(
+            textDirection: TextDirectionHelper.currentDirection,
             answer,
             style: TextStyles.bodyTextStyle(context),
             textAlign: TextAlign.center,

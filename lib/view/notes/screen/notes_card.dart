@@ -7,6 +7,7 @@ import 'package:todo_app_with_notifications/view/notes/controller/notes_controll
 import 'package:todo_app_with_notifications/view/notes/screen/update_notes_screen.dart';
 
 import '../../../../core/const_data/text_styles.dart';
+import '../../../core/utils/text_direction_helper.dart';
 
 // ignore: must_be_immutable
 class NotesCard extends StatelessWidget {
@@ -32,8 +33,11 @@ class NotesCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("What would you like to do?".tr,
-                      style: TextStyles.headingTextStyle(context)),
+                  Text(
+                    "What would you like to do?".tr,
+                    textDirection: TextDirectionHelper.currentDirection,
+                    style: TextStyles.headingTextStyle(context),
+                  ),
                   SizedBox(height: 20.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -59,6 +63,8 @@ class NotesCard extends StatelessWidget {
                               title: Text('Confirm Delete'.tr),
                               content: Text(
                                 'Are you sure you want to delete this Note?'.tr,
+                                textDirection:
+                                    TextDirectionHelper.currentDirection,
                               ),
                               actions: [
                                 TextButton(

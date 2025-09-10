@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:todo_app_with_notifications/core/const_data/app_colors.dart';
 import 'package:todo_app_with_notifications/core/const_data/text_styles.dart';
+import 'package:todo_app_with_notifications/core/utils/text_direction_helper.dart';
 import '../../../../data/model/task_model.dart';
 import '../controller/verify_task_completion_controller.dart';
 
@@ -90,6 +91,7 @@ class VerifyTaskCompletionScreen extends StatelessWidget {
                         child: Text(
                           "No image selected.".tr,
                           style: TextStyle(fontSize: 16, color: Colors.grey),
+                          textDirection: TextDirectionHelper.currentDirection,
                         ),
                       ),
 

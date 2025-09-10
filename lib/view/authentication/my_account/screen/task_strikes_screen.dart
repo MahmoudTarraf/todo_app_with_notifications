@@ -54,12 +54,13 @@ class TaskStrikesScreen extends StatelessWidget {
                           "${'🎉 No Strikes Yet!'.tr} \n ${'Keep going!'.tr}",
                           style: TextStyles.bodyTextStyle(context),
                           textAlign: TextAlign.center,
+                          textDirection: TextDirectionHelper.currentDirection,
                         ),
                       ],
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12.r),
                     itemCount: failedTasks.length,
                     itemBuilder: (context, index) {
                       FailedTaskModel task = failedTasks[index];

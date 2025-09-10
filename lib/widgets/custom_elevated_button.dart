@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final Widget child;
@@ -25,7 +26,7 @@ class CustomElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5),
+      margin: EdgeInsets.all(5.r),
       width: width,
       height: height,
       child: ElevatedButton(
@@ -38,8 +39,8 @@ class CustomElevatedButton extends StatelessWidget {
               width: 2,
               color: backgroundColor,
             ),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.r),
             ),
           ),
         ),

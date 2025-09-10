@@ -8,6 +8,7 @@ import 'package:todo_app_with_notifications/view/authentication/my_account/contr
 
 import '../../core/const_data/app_colors.dart';
 import '../../core/const_data/text_styles.dart';
+import '../core/utils/text_direction_helper.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -59,6 +60,7 @@ class AppDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          textDirection: TextDirectionHelper.currentDirection,
                           thisUser!.name.toString(),
                           style: TextStyles.headingTextStyle(context)
                               .copyWith(fontSize: 20.sp),
@@ -66,6 +68,7 @@ class AppDrawer extends StatelessWidget {
                         ),
                         SizedBox(height: 8.h),
                         Text(
+                          textDirection: TextDirectionHelper.currentDirection,
                           thisUser.email.toString(),
                           style: TextStyles.smallTextStyle(context).copyWith(),
                           overflow: TextOverflow.ellipsis,
@@ -127,7 +130,7 @@ class AppDrawer extends StatelessWidget {
                             : Colors.white, // automatically switches
                     minimumSize: Size.fromHeight(60.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                   icon: controller.isLoader.value
@@ -144,6 +147,7 @@ class AppDrawer extends StatelessWidget {
                           color: Colors.white,
                         )
                       : Text(
+                          textDirection: TextDirectionHelper.currentDirection,
                           "Logout".tr,
                           style: TextStyle(
                             fontSize: 20.sp,
@@ -173,7 +177,11 @@ class AppDrawer extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           size: 30.r,
         ),
-        title: Text(title, style: TextStyles.bodyTextStyle(context)),
+        title: Text(
+          title,
+          style: TextStyles.bodyTextStyle(context),
+          textDirection: TextDirectionHelper.currentDirection,
+        ),
         onTap: onTap,
       );
     });

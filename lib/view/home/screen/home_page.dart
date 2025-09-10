@@ -54,17 +54,22 @@ class HomePage extends StatelessWidget {
                           final nameText = userService.currentUser?.name;
                           if (nameText == null) {
                             return Text(
+                              textDirection:
+                                  TextDirectionHelper.currentDirection,
                               'Loading_name'.tr,
                               style: TextStyles.headingTextStyle(context)
                                   .copyWith(fontStyle: FontStyle.italic),
                             );
                           }
                           return RichText(
+                            textDirection: TextDirectionHelper.currentDirection,
                             text: TextSpan(
                               style: TextStyles.headingTextStyle(context)
                                   .copyWith(fontStyle: FontStyle.italic),
                               children: [
-                                TextSpan(text: 'Welcome'.tr),
+                                TextSpan(
+                                  text: 'Welcome'.tr,
+                                ),
                                 TextSpan(
                                   text: '$nameText !',
                                   style: TextStyle(
@@ -185,6 +190,7 @@ class HomePage extends StatelessWidget {
                           horizontal: 16.w, vertical: 12.h),
                       child: Obx(() {
                         return Row(
+                          textDirection: TextDirectionHelper.currentDirection,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _buildSummaryItem(context, 'Due Today'.tr,
@@ -217,6 +223,7 @@ class HomePage extends StatelessWidget {
                     ),
                     child: Obx(
                       () => Text(
+                        textDirection: TextDirectionHelper.currentDirection,
                         achController.motivationalQuote.value,
                         style: TextStyle(
                           fontStyle: FontStyle.italic,

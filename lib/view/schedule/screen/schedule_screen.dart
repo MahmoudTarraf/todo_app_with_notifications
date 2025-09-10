@@ -146,6 +146,8 @@ class ScheduleScreen extends StatelessWidget {
                               "🎉 ${'No tasks scheduled for'.tr} \n${DateFormat('EEEE, MMM d').format(controller.selectedDate.value)}!",
                               style: TextStyles.bodyTextStyle(context),
                               textAlign: TextAlign.center,
+                              textDirection:
+                                  TextDirectionHelper.currentDirection,
                             ),
                           ],
                         ),

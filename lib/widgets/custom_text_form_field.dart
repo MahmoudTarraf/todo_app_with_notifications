@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../core/utils/text_direction_helper.dart';
+
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final Icon prefixIcon;
@@ -43,6 +45,7 @@ class CustomTextFormField extends StatelessWidget {
         color: theme.cardColor.withOpacity(0.7),
       ),
       child: TextFormField(
+        textDirection: TextDirectionHelper.currentDirection,
         onChanged: onChanged,
         keyboardType: keyboardType,
         validator: validator,

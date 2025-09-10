@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/const_data/text_styles.dart';
+import '../core/utils/text_direction_helper.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -16,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: showBack, // disables back if false
 
       title: Text(
+        textDirection: TextDirectionHelper.currentDirection,
         title,
         style: TextStyles.bodyTextStyle(context),
       ),

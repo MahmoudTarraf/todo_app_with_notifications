@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:todo_app_with_notifications/core/const_data/text_styles.dart';
 
+import '../core/utils/text_direction_helper.dart';
+
 class CongratsScreen extends StatelessWidget {
   final String animationName;
   final int streak;
@@ -70,6 +72,7 @@ Widget showCongratsText(BuildContext context, int streak) {
   return Padding(
     padding: EdgeInsets.all(8.0.r),
     child: Text(
+      textDirection: TextDirectionHelper.currentDirection,
       isArabic
           ? '🎉 تهانينا! لقد حققت سلسلة مدتها $streak يوم!\nلقد حصلت على +3 تحديثات، +3 حذف، وتم إزالة خطأ واحد.'
           : '🎉 Congrats! You hit a $streak-day streak!\nYou earned +3 updates, +3 deletes, 1 strike removed.',

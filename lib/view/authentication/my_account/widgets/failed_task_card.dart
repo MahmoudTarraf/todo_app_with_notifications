@@ -7,6 +7,7 @@ import 'package:todo_app_with_notifications/view/authentication/my_account/contr
 import '../../../../core/const_data/text_styles.dart';
 import '../../../../core/utils/format_deadline.dart';
 import '../../../../core/utils/format_scheduled_dates.dart';
+import '../../../../core/utils/text_direction_helper.dart';
 import '../../../../data/model/task_settings.dart';
 import '../../../../core/utils/get_priority_color.dart';
 
@@ -26,9 +27,9 @@ class FailedTaskCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 10.h),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,7 +60,7 @@ class FailedTaskCard extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
 
             // 📝 Content (optional)
             if (task.content.trim().isNotEmpty)
@@ -68,14 +69,14 @@ class FailedTaskCard extends StatelessWidget {
                 style: TextStyles.bodyTextStyle(context),
               ),
 
-            if (task.content.trim().isNotEmpty) const SizedBox(height: 12),
+            if (task.content.trim().isNotEmpty) SizedBox(height: 12.h),
 
             // 📅 Date Info
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(Icons.schedule, size: 23.r, color: Colors.black54),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.h),
                 Expanded(
                   child: Text(
                     task.taskType == TaskType.oneTime
@@ -88,12 +89,13 @@ class FailedTaskCard extends StatelessWidget {
                                 task.deadline.toString(),
                               )}',
                     style: TextStyle(fontSize: 15.sp, color: Colors.black54),
+                    textDirection: TextDirectionHelper.currentDirection,
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
 // 📅 Failed At Info
             if (task.failedAt != null) ...[
               Row(
@@ -101,17 +103,18 @@ class FailedTaskCard extends StatelessWidget {
                 children: [
                   Icon(Icons.error_outline,
                       size: 23.r, color: Colors.redAccent),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.h),
                   Expanded(
                     child: Text(
                       '${"Failed At:".tr}\n${formatDeadline(task.failedAt.toString())}',
                       style:
                           TextStyle(fontSize: 15.sp, color: Colors.redAccent),
+                      textDirection: TextDirectionHelper.currentDirection,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
             ],
           ],
         ),

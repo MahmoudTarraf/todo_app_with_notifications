@@ -7,6 +7,7 @@ import '../../../../../core/const_data/app_images.dart';
 import '../../../../../core/const_data/text_styles.dart';
 import '../../../../../core/service/routes.dart';
 import '../../../../../core/service/user_service.dart';
+import '../../../../../core/utils/text_direction_helper.dart';
 import '../../../../../widgets/custom_elevated_button.dart';
 import '../../../../../widgets/custom_text_form_field.dart';
 import '../controller/login_controller.dart';
@@ -120,6 +121,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
+                          textDirection: TextDirectionHelper.currentDirection,
                           'Don\'t have an account?'.tr,
                           style: TextStyles.bodyTextStyle(context),
                         ),
@@ -128,6 +130,8 @@ class LoginScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0.r),
                             child: Text(
+                              textDirection:
+                                  TextDirectionHelper.currentDirection,
                               'Signup'.tr,
                               style: TextStyles.bodyTextStyle(context).copyWith(
                                 color: Theme.of(context).primaryColor,
@@ -169,6 +173,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
+                          textDirection: TextDirectionHelper.currentDirection,
                           'Forgot Password?'.tr,
                           style: TextStyles.smallTextStyle(context),
                         ),
@@ -177,6 +182,8 @@ class LoginScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0.r),
                             child: Text(
+                              textDirection:
+                                  TextDirectionHelper.currentDirection,
                               'Click Here'.tr,
                               style:
                                   TextStyles.smallTextStyle(context).copyWith(

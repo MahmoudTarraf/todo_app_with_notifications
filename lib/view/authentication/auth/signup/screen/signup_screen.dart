@@ -8,6 +8,7 @@ import 'package:todo_app_with_notifications/core/service/routes.dart';
 import 'package:todo_app_with_notifications/widgets/custom_text_form_field.dart';
 
 import '../../../../../core/service/messages.dart';
+import '../../../../../core/utils/text_direction_helper.dart';
 import '../../../../../widgets/custom_elevated_button.dart';
 import '../controller/signup_controller.dart';
 
@@ -51,6 +52,7 @@ class SignupScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 5.h),
                     Text(
+                      textDirection: TextDirectionHelper.currentDirection,
                       "Create Your Account".tr,
                       style: TextStyles.headingTextStyle(context)
                           .copyWith(fontSize: 27.sp),
@@ -186,6 +188,7 @@ class SignupScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
+                            textDirection: TextDirectionHelper.currentDirection,
                             'Already have an account?'.tr,
                             style: TextStyles.bodyTextStyle(context),
                           ),
@@ -194,6 +197,8 @@ class SignupScreen extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.all(5.r),
                               child: Text(
+                                textDirection:
+                                    TextDirectionHelper.currentDirection,
                                 'Login'.tr,
                                 style:
                                     TextStyles.bodyTextStyle(context).copyWith(

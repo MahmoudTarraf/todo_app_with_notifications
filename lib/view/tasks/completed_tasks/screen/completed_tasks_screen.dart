@@ -68,6 +68,9 @@ class CompletedTasksScreen extends StatelessWidget {
                     "✅ ${'No completed tasks yet.'.tr}\n${'Finish some tasks and they will appear here.'.tr}",
                     style: TextStyles.bodyTextStyle(context),
                     textAlign: TextAlign.center,
+                    textDirection: Get.locale?.languageCode == 'ar'
+                        ? TextDirection.rtl
+                        : TextDirection.ltr, // RTL for Arabic
                   ),
                 ],
               ),

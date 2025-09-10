@@ -82,7 +82,8 @@ class ScheduleController extends GetxController {
         await loadTasksFromLocalDB();
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
       await loadTasksFromLocalDB();
     } finally {
       isLoading.value = false;

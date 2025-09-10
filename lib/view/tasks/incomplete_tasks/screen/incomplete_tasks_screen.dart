@@ -67,6 +67,9 @@ class IncompleteTasksScreen extends StatelessWidget {
                       "No_tasks_here".tr,
                       style: TextStyles.bodyTextStyle(context),
                       textAlign: TextAlign.center,
+                      textDirection: Get.locale?.languageCode == 'ar'
+                          ? TextDirection.rtl
+                          : TextDirection.ltr, // RTL for Arabic
                     ),
                   ],
                 ),

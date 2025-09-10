@@ -340,6 +340,7 @@ class AppTranslations extends Translations {
           "Notification permission is required to receive task alerts. Please enable it in app settings.":
               "Notification permission is required to receive task alerts. Please enable it in app settings.",
           "Open Settings": "Open Settings",
+          "Achievements": "Achievements",
         },
         //*****
         // !Arabic
@@ -677,6 +678,7 @@ class AppTranslations extends Translations {
           "Notification permission is required to receive task alerts. Please enable it in app settings.":
               "يلزم الحصول على إذن الإشعارات لتلقي تنبيهات المهام. يُرجى تفعيله في إعدادات التطبيق.",
           "Open Settings": "افتح الإعدادات",
+          "Achievements": "الإنجازات",
         },
       };
 }

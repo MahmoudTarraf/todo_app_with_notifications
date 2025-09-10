@@ -7,6 +7,8 @@ import 'package:todo_app_with_notifications/core/const_data/text_styles.dart';
 import 'package:todo_app_with_notifications/core/service/messages.dart';
 import 'package:todo_app_with_notifications/core/service/routes.dart';
 
+import '../../../../core/utils/text_direction_helper.dart';
+
 class WarningStrikesScreen extends StatelessWidget {
   final String animationName;
   final int taskStrikes;
@@ -29,6 +31,7 @@ class WarningStrikesScreen extends StatelessWidget {
           title: Text(
             taskStrikes >= 3 ? 'Account Deleted!'.tr : 'Warning!'.tr,
             style: TextStyles.headingTextStyle(context),
+            textDirection: TextDirectionHelper.currentDirection,
           ),
           automaticallyImplyLeading: false,
         ),
@@ -95,6 +98,7 @@ class WarningStrikesScreen extends StatelessWidget {
               decoration: TextDecoration.underline,
               decorationColor: textColor,
             ),
+            textDirection: TextDirectionHelper.currentDirection,
           ),
         ),
       );
@@ -110,6 +114,7 @@ class WarningStrikesScreen extends StatelessWidget {
               decoration: TextDecoration.underline,
               decorationColor: textColor,
             ),
+            textDirection: TextDirectionHelper.currentDirection,
           ),
         ),
       );

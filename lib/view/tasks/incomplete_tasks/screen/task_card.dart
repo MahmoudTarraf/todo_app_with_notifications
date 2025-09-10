@@ -5,6 +5,7 @@ import 'package:todo_app_with_notifications/core/const_data/app_colors.dart';
 import 'package:todo_app_with_notifications/core/service/messages.dart';
 import 'package:todo_app_with_notifications/core/service/routes.dart';
 import 'package:todo_app_with_notifications/core/service/user_service.dart';
+import 'package:todo_app_with_notifications/core/utils/text_direction_helper.dart';
 import 'package:todo_app_with_notifications/data/model/task_model.dart';
 import 'package:todo_app_with_notifications/view/tasks/incomplete_tasks/controller/incomplete_tasks_controller.dart';
 import 'package:todo_app_with_notifications/view/tasks/update_tasks/screen/update_tasks_screen.dart';
@@ -90,6 +91,8 @@ class TaskCard extends StatelessWidget {
                                   builder: (context) => AlertDialog(
                                     title: Text('Confirm Delete'.tr),
                                     content: Text(
+                                      textDirection:
+                                          TextDirectionHelper.currentDirection,
                                       '${"Are you sure you want to delete this task?".tr}\n${"You will have".tr} ${thisUser.remainingDeletes - 1} ${"delete(s) left.".tr}',
                                     ),
                                     actions: [
@@ -135,118 +138,123 @@ class TaskCard extends StatelessWidget {
           },
         );
       },
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        color: Theme.of(context).colorScheme.surface,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 🔹 Title & Priority Icon
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 8,
-                    backgroundColor:
-                        getPriorityColor(context, task.taskPriority.name),
-                  ),
-                  SizedBox(width: 20.w),
-                  Expanded(
-                    child: Text(
-                      task.title,
-                      style: TextStyles.bodyTextStyle(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black,
+      child: Directionality(
+        textDirection: TextDirectionHelper.currentDirection,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          color: Theme.of(context).colorScheme.surface,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 🔹 Title & Priority Icon
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 8,
+                      backgroundColor:
+                          getPriorityColor(context, task.taskPriority.name),
+                    ),
+                    SizedBox(width: 20.w),
+                    Expanded(
+                      child: Text(
+                        task.title,
+                        style: TextStyles.bodyTextStyle(context).copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-                  Icon(
-                    task.isCompleted
-                        ? Icons.check_circle_outline
-                        : Icons.highlight_off_rounded,
-                    color: task.isCompleted ? Colors.green : Colors.redAccent,
-                    size: 35.r,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              // 📝 Content (optional)
-              if (task.content.trim().isNotEmpty)
-                Text(
-                  task.content,
-                  style: TextStyles.bodyTextStyle(context).copyWith(
-                      color: isDark ? Colors.white70 : Colors.black87),
+                    Icon(
+                      task.isCompleted
+                          ? Icons.check_circle_outline
+                          : Icons.highlight_off_rounded,
+                      color: task.isCompleted ? Colors.green : Colors.redAccent,
+                      size: 35.r,
+                    ),
+                  ],
                 ),
 
-              if (task.content.trim().isNotEmpty) const SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-              // 📅 Date Info
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.schedule,
-                    size: 23.r,
-                    color: isDark ? Colors.white70 : Colors.black54,
+                // 📝 Content (optional)
+                if (task.content.trim().isNotEmpty)
+                  Text(
+                    task.content,
+                    style: TextStyles.bodyTextStyle(context).copyWith(
+                        color: isDark ? Colors.white70 : Colors.black87),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      task.taskType == TaskType.oneTime
-                          ? '${"One-time Deadline:".tr}\n${formatDeadline(task.deadline.toString())}'
-                          : task.frequency == 'custom'
-                              ? '${"Scheduled on:".tr}\n${formatScheduledDates(task.dates)}'
-                              : '${"Repeats".tr} ${task.frequency}\n${"Deadline:".tr} ${formatDeadline(task.deadline.toString())}',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        color: isDark ? Colors.white70 : Colors.black54,
+
+                if (task.content.trim().isNotEmpty) const SizedBox(height: 12),
+
+                // 📅 Date Info
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.schedule,
+                      size: 23.r,
+                      color: isDark ? Colors.white70 : Colors.black54,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        textDirection: TextDirectionHelper.currentDirection,
+                        task.taskType == TaskType.oneTime
+                            ? '${"One-time Deadline:".tr}\n${formatDeadline(task.deadline.toString())}'
+                            : task.frequency == 'custom'
+                                ? '${"Scheduled on:".tr}\n${formatScheduledDates(task.dates)}'
+                                : '${"Repeats".tr} ${task.frequency}\n${"Deadline:".tr} ${formatDeadline(task.deadline.toString())}',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: isDark ? Colors.white70 : Colors.black54,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // ✅ Mark as Completed Button
-              if (!task.isCompleted)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Get.toNamed(
-                        Routes.verifyTaskCompletionScreen,
-                        arguments: task,
-                      );
-                    },
-                    icon: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 25.r,
-                    ),
-                    label: Text(
-                      "Verify Completion".tr,
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                // ✅ Mark as Completed Button
+                if (!task.isCompleted)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Get.toNamed(
+                          Routes.verifyTaskCompletionScreen,
+                          arguments: task,
+                        );
+                      },
+                      icon: Icon(
+                        Icons.check,
                         color: Colors.white,
+                        size: 25.r,
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                      label: Text(
+                        textDirection: TextDirectionHelper.currentDirection,
+                        "Verify Completion".tr,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.white,
+                        ),
                       ),
-                      backgroundColor: Colors.green,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

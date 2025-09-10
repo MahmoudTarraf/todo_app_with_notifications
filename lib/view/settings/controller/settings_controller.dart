@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo_app_with_notifications/core/service/my_service.dart';
 import 'package:todo_app_with_notifications/core/service/shared_prefrences_keys.dart';
 import 'package:todo_app_with_notifications/initial_screen_controller.dart';
+import 'package:todo_app_with_notifications/view/achievments/controller/achievments_controller.dart';
 import '../../../core/class/crud.dart';
 import '../../../core/const_data/app_colors.dart';
 import '../../../core/service/app_link.dart';
@@ -17,6 +18,7 @@ class SettingsController extends GetxController {
   Rx<String> language = 'en'.obs;
   Rx<bool> notificationsEnabled = true.obs;
   RxBool isUpdatingNotifications = false.obs; // 🔹 New flag
+  RxBool isUpdatingLanguage = false.obs; // 🔹 New flag
 
   final myService = Get.find<MyService>();
 
@@ -61,10 +63,13 @@ class SettingsController extends GetxController {
   }
 
   // Language toggle
-  void setLanguage(String langCode) async {
+  Future<void> setLanguage(String langCode) async {
     language.value = langCode;
     Get.updateLocale(Locale(langCode)); // 🔹 Update locale immediately
     await myService.storeStringData(SharedPrefrencesKeys.language, langCode);
+
+    final achController = Get.put(AchievementsController());
+    await achController.getMotivationalQuote();
   }
 
 // 🔹 Toggle Notifications (local + server)
@@ -122,7 +127,7 @@ class SettingsController extends GetxController {
     } catch (e) {
       Messages.getSnackMessage(
         "Error".tr,
-        e.toString(),
+        e.toString().tr,
         ColorsManager.primary,
       );
     } finally {

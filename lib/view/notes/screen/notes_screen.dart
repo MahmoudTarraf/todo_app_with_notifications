@@ -71,6 +71,9 @@ class NotesScreen extends StatelessWidget {
                       "🎉 ${"No Notes here!".tr} \n${'Tap the button and start adding notes.'.tr}",
                       style: TextStyles.bodyTextStyle(context),
                       textAlign: TextAlign.center,
+                      textDirection: Get.locale?.languageCode == 'ar'
+                          ? TextDirection.rtl
+                          : TextDirection.ltr, // RTL for Arabic
                     ),
                   ],
                 ),

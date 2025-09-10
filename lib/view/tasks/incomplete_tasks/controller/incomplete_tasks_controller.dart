@@ -126,7 +126,7 @@ class IncompleteTasksController extends GetxController {
             statusRequest.value = StatusRequest.success;
             Messages.getSnackMessage(
               "Success".tr,
-              "Task added Successfully!",
+              "Task added Successfully!".tr,
               ColorsManager.green,
             );
             final serverId = responseBody['id'];
@@ -161,7 +161,8 @@ class IncompleteTasksController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       statusRequest.value = StatusRequest.none;
     }
@@ -229,7 +230,8 @@ class IncompleteTasksController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       statusRequest.value = StatusRequest.none;
     }
@@ -285,7 +287,8 @@ class IncompleteTasksController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     }
   }
 

@@ -5,6 +5,8 @@ import 'package:lottie/lottie.dart';
 import 'package:todo_app_with_notifications/core/const_data/app_animations.dart';
 import 'package:todo_app_with_notifications/core/const_data/text_styles.dart';
 
+import '../../../../core/utils/text_direction_helper.dart';
+
 class AnimationScreen extends StatelessWidget {
   final String animationName;
   final String? analysisText;
@@ -91,6 +93,7 @@ class AnimationScreen extends StatelessWidget {
               builder: (context) => AlertDialog(
                 title: Text(
                   'AI Says:'.tr,
+                  textDirection: TextDirectionHelper.currentDirection,
                   style: TextStyles.bodyTextStyle(context).copyWith(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w600,
@@ -118,6 +121,7 @@ class AnimationScreen extends StatelessWidget {
         },
         child: Text(
           'Show Analysis'.tr,
+          textDirection: TextDirectionHelper.currentDirection,
           style: TextStyles.bodyTextStyle(context).copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,

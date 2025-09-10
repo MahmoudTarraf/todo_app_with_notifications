@@ -7,6 +7,7 @@ import 'package:todo_app_with_notifications/core/service/routes.dart';
 
 import '../../../../core/service/messages.dart';
 import '../../../../core/service/user_service.dart';
+import '../../../../core/utils/text_direction_helper.dart';
 import '../controller/my_account_controller.dart';
 
 class MyAccountScreen extends StatelessWidget {
@@ -30,9 +31,9 @@ class MyAccountScreen extends StatelessWidget {
             Obx(() {
               return IconButton(
                 icon: controller.refreshLoading.value
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
+                    ? SizedBox(
+                        width: 20.w,
+                        height: 20.h,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : Icon(
@@ -111,9 +112,13 @@ class MyAccountScreen extends StatelessWidget {
 
                         // Task Limits
                         _buildLimitTile(
-                            "Remaining Updates".tr, thisUser.remainingUpdates),
+                          "Remaining Updates".tr,
+                          thisUser.remainingUpdates,
+                        ),
                         _buildLimitTile(
-                            "Remaining Deletes".tr, thisUser.remainingDeletes),
+                          "Remaining Deletes".tr,
+                          thisUser.remainingDeletes,
+                        ),
                         InkWell(
                           onTap: () {
                             Get.toNamed(Routes.taskStrikes);
@@ -219,10 +224,12 @@ class MyAccountScreen extends StatelessWidget {
               : theme.iconTheme.color, // ✅ adapts to dark/light
         ),
         title: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           title,
           style: TextStyles.bodyTextStyle(context), // ✅ dynamic text color
         ),
         trailing: Text(
+          textDirection: TextDirectionHelper.currentDirection,
           "$count/3",
           style: TextStyles.smallTextStyle(context).copyWith(
             color: isStrike && count > 0
@@ -275,6 +282,7 @@ class MyAccountScreen extends StatelessWidget {
               }
             },
             child: Text(
+              textDirection: TextDirectionHelper.currentDirection,
               "Save",
               style: TextStyle(color: theme.colorScheme.primary), // ✅ adapts
             ),

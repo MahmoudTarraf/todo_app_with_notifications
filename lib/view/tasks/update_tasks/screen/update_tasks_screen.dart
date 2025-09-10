@@ -9,6 +9,7 @@ import 'package:todo_app_with_notifications/core/service/user_service.dart';
 import 'package:todo_app_with_notifications/data/model/task_model.dart';
 import 'package:todo_app_with_notifications/view/tasks/incomplete_tasks/controller/incomplete_tasks_controller.dart';
 
+import '../../../../core/utils/text_direction_helper.dart';
 import '../controller/update_tasks_controller.dart';
 
 class UpdateTasksScreen extends StatelessWidget {
@@ -103,6 +104,8 @@ class UpdateTasksScreen extends StatelessWidget {
                                     style: TextStyles.bodyTextStyle(context),
                                   ),
                                   content: Text(
+                                    textDirection:
+                                        TextDirectionHelper.currentDirection,
                                     '${"Are you sure you want to update this task?".tr}\n${"You will have".tr} ${thisUser!.remainingUpdates - 1} ${"update(s) left.".tr}',
                                     style: TextStyle(fontSize: 16.sp),
                                   ),

@@ -193,7 +193,7 @@ class MyAccountController extends GetxController {
     } catch (e) {
       Messages.getSnackMessage(
         "Error".tr,
-        e.toString(),
+        e.toString().tr,
         ColorsManager.primary,
       );
     }
@@ -264,7 +264,8 @@ class MyAccountController extends GetxController {
         loadFailedTasksFromLocalDB();
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
       loadFailedTasksFromLocalDB();
     }
   }
@@ -318,7 +319,8 @@ class MyAccountController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+          "Error".tr, e.toString().tr, ColorsManager.primary);
     } finally {
       isLoader.value = false;
     }

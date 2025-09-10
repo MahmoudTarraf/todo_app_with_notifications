@@ -7,6 +7,7 @@ import 'package:todo_app_with_notifications/core/const_data/text_styles.dart';
 import 'package:todo_app_with_notifications/data/model/achievments_model.dart';
 
 import '../../../core/const_data/app_images.dart';
+import '../../../core/utils/text_direction_helper.dart';
 
 class AchievmentsCard extends StatelessWidget {
   const AchievmentsCard({super.key, required this.achievments});
@@ -51,6 +52,7 @@ class AchievmentsCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
+                      textDirection: TextDirectionHelper.currentDirection,
                       'Progress: '.tr,
                       style: TextStyles.smallTextStyle(context).copyWith(
                         color: Colors.greenAccent.shade400, // ✅ brighter green
@@ -66,6 +68,7 @@ class AchievmentsCard extends StatelessWidget {
                       ),
                       SizedBox(width: 6.w),
                       Text(
+                        textDirection: TextDirectionHelper.currentDirection,
                         "Completed".tr,
                         style: TextStyles.smallTextStyle(context).copyWith(
                           color: Colors.greenAccent.shade400,
@@ -87,6 +90,7 @@ class AchievmentsCard extends StatelessWidget {
                       ),
                       SizedBox(width: 8.w),
                       Text(
+                        textDirection: TextDirectionHelper.currentDirection,
                         "${thisAchievment.progress} %",
                         style: TextStyle(
                           color: Theme.of(context)
@@ -119,6 +123,7 @@ Widget getNoAchievements() {
             fontStyle: FontStyle.italic,
             color: Theme.of(context).textTheme.bodyLarge?.color, // ✅ adaptive
           ),
+          textDirection: TextDirectionHelper.currentDirection,
         ),
         Padding(
           padding: EdgeInsets.only(top: 30.h),
@@ -141,6 +146,7 @@ Widget getNoAchievements() {
                 ?.withOpacity(0.6), // ✅ adaptive
           ),
           textAlign: TextAlign.center,
+          textDirection: TextDirectionHelper.currentDirection,
         ),
       ],
     );
