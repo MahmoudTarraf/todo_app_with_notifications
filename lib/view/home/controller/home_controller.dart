@@ -113,7 +113,11 @@ class HomeController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), ColorsManager.primary);
+      Messages.getSnackMessage(
+        "Error".tr,
+        e.toString().tr,
+        ColorsManager.primary,
+      );
     }
   }
 }

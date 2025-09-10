@@ -1,46 +1,87 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'check_firebase_connection.dart';
-
-/// 🔹 Separate function for showing connectivity dialog
-void showConnectivityDialog() {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Get.defaultDialog(
-      barrierDismissible: false, // User cannot dismiss by tapping outside
-      title: Get.locale?.languageCode == 'ar'
-          ? 'مشكلة في الاتصال'
-          : 'Connectivity Issue',
-      middleText: Get.locale?.languageCode == 'ar'
-          ? 'قد لا تعمل الإشعارات في منطقتك. يُرجى تفعيل VPN مثل ProtonVPN لتلقي التحديثات.'
-          : 'Notifications may not work in your region. Please turn on a VPN like ProtonVPN to receive updates.',
-      textConfirm:
-          Get.locale?.languageCode == 'ar' ? 'إعادة المحاولة' : 'Retry',
-      textCancel: Get.locale?.languageCode == 'ar' ? 'خروج' : 'Exit',
-      confirmTextColor: Colors.white,
-      cancelTextColor: Colors.purple,
-      onConfirm: () async {
-        Get.back(); // close dialog
-        final reachable = await checkFirebaseConnection();
-        if (!reachable) {
-          showConnectivityDialog(); // show dialog again instead of re-running main
-        }
-      },
-      onCancel: () {
-        // Exit the app
-        SystemNavigator.pop();
-      },
-    );
-  });
+/// Returns true if user chose "Retry", false if "Continue without VPN"
+Future<bool> showConnectivityDialog() async {
+  return await Get.dialog<bool>(
+        barrierDismissible: false,
+        AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          title: Text(
+            Get.locale?.languageCode == 'ar'
+                ? 'مشكلة في الاتصال'
+                : 'Connectivity Issue',
+            style: TextStyle(
+              color: Colors.purple,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.sp,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            Get.locale?.languageCode == 'ar'
+                ? 'قد لا تعمل الإشعارات في منطقتك.\nيمكنك الاستمرار بدون VPN، ولكن قد لا تصلك الإشعارات.'
+                : 'Notifications may not work in your region.\nYou can continue without VPN, but notifications may not arrive.',
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.start,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            // Retry Button
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple, // purple background
+                foregroundColor: Colors.white, // white text
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
+              onPressed: () => Get.back(result: true),
+              child: Text(
+                Get.locale?.languageCode == 'ar' ? 'إعادة المحاولة' : 'Retry',
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Continue without VPN Button
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.purple),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: () => Get.back(result: false),
+              child: Text(
+                Get.locale?.languageCode == 'ar'
+                    ? 'استمرار بدون VPN'
+                    : 'Continue without VPN',
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ) ??
+      false;
 }
 
-void showNoticeDialog(BuildContext context) {
+void showNoticeDialog() {
   Get.dialog(
     Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.r),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -49,12 +90,12 @@ void showNoticeDialog(BuildContext context) {
               Get.locale?.languageCode == 'ar' ? '⚠️ تنبيه' : '⚠️ Notice',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.redAccent,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
 
             // 🔹 Message
             Text(
@@ -70,7 +111,7 @@ void showNoticeDialog(BuildContext context) {
                       '• Choose priority wisely, notifications depend on it\n'
                       '• You can later update the deadline if you want',
               textAlign: TextAlign.start,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16.sp),
             ),
             const SizedBox(height: 20),
 
@@ -79,7 +120,7 @@ void showNoticeDialog(BuildContext context) {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.redAccent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(13.r),
                 ),
               ),
               onPressed: () {
@@ -87,7 +128,10 @@ void showNoticeDialog(BuildContext context) {
               },
               child: Text(
                 Get.locale?.languageCode == 'ar' ? 'موافق' : 'OK',
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.sp,
+                ),
               ),
             ),
           ],

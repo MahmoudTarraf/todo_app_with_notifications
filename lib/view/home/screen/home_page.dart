@@ -12,6 +12,7 @@ import 'package:todo_app_with_notifications/widgets/drawer.dart';
 import 'package:todo_app_with_notifications/widgets/floating_action_button_widget.dart';
 
 import '../../../core/service/user_service.dart';
+import '../../../initial_screen_controller.dart';
 import '../../achievments/controller/achievments_controller.dart';
 import '../../authentication/my_account/controller/my_account_controller.dart';
 import '../controller/home_controller.dart';
@@ -24,6 +25,7 @@ class HomePage extends StatelessWidget {
     // Put the AchievementsController
     final achController = Get.put(AchievementsController());
     final homeController = Get.find<HomeController>();
+    Get.put(InitialScreenController());
 
     return Directionality(
       textDirection: TextDirection.ltr,

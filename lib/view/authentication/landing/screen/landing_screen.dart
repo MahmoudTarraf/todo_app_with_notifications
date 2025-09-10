@@ -8,10 +8,11 @@ import 'package:intro_views_flutter/intro_views_flutter.dart';
 import '../../../../core/const_data/app_images.dart';
 import '../../../../core/const_data/text_styles.dart';
 import '../../../../core/service/routes.dart';
+import '../../../../initial_screen_controller.dart';
 
 class LandingScreen extends StatelessWidget {
-  const LandingScreen({super.key});
-
+  LandingScreen({super.key});
+  final controller = Get.put(InitialScreenController());
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

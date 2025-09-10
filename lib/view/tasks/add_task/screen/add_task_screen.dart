@@ -8,16 +8,31 @@ import 'package:todo_app_with_notifications/view/tasks/incomplete_tasks/controll
 import '../../../../../core/const_data/text_styles.dart';
 import '../controller/add_task_controller.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({super.key});
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen({super.key});
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  bool _hasShownDialog = false;
+  @override
+  void initState() {
+    super.initState();
+    // Show dialog only once after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasShownDialog) {
+        _hasShownDialog = true;
+        showNoticeDialog();
+      }
+    });
+  }
 
   final controller = Get.put(AddTaskController());
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showNoticeDialog(context);
-    });
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(

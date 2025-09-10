@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app_with_notifications/core/service/my_service.dart';
 import 'package:todo_app_with_notifications/core/service/shared_prefrences_keys.dart';
+import 'package:todo_app_with_notifications/initial_screen_controller.dart';
 import '../../../core/class/crud.dart';
 import '../../../core/const_data/app_colors.dart';
 import '../../../core/service/app_link.dart';
@@ -102,6 +103,12 @@ class SettingsController extends GetxController {
               "Notifications setting updated successfully".tr,
               ColorsManager.green,
             );
+            if (enabled == true) {
+              final temp = Get.put(
+                InitialScreenController(),
+              );
+              await temp.checkConnectivity();
+            }
           },
         );
       } else {

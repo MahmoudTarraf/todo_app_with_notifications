@@ -144,7 +144,7 @@ class AppDrawer extends StatelessWidget {
                           color: Colors.white,
                         )
                       : Text(
-                          "Logout",
+                          "Logout".tr,
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),

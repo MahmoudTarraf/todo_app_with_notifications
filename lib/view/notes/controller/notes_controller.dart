@@ -93,7 +93,11 @@ class NotesController extends GetxController {
         loadNotesFromLocalDB();
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), Colors.red);
+      Messages.getSnackMessage(
+        "Error".tr,
+        e.toString().tr,
+        Colors.red,
+      );
       loadNotesFromLocalDB();
     } finally {
       isLoading = false;
@@ -152,7 +156,11 @@ class NotesController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), Colors.red);
+      Messages.getSnackMessage(
+        "Error".tr,
+        e.toString().tr,
+        Colors.red,
+      );
     } finally {
       statusRequest = StatusRequest.none;
       update();
@@ -283,7 +291,11 @@ class NotesController extends GetxController {
         );
       }
     } catch (e) {
-      Messages.getSnackMessage("Error".tr, e.toString(), Colors.red);
+      Messages.getSnackMessage(
+        "Error".tr,
+        e.toString().tr,
+        Colors.red,
+      );
     }
   }
 

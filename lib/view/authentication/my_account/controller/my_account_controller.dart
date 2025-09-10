@@ -117,7 +117,7 @@ class MyAccountController extends GetxController {
             } catch (e) {
               Messages.getSnackMessage(
                 "Error".tr,
-                e.toString(),
+                e.toString().tr,
                 ColorsManager.primary,
               );
             }
@@ -136,7 +136,7 @@ class MyAccountController extends GetxController {
         } catch (e) {
           Messages.getSnackMessage(
             "Error".tr,
-            e.toString(),
+            e.toString().tr,
             ColorsManager.primary,
           );
         }
@@ -176,7 +176,7 @@ class MyAccountController extends GetxController {
           if (isEmail) {
             Messages.getSnackMessage(
               'Success'.tr,
-              responseBody['message'],
+              responseBody['message'].tr,
               ColorsManager.green,
             );
           }
@@ -300,8 +300,8 @@ class MyAccountController extends GetxController {
           (responseBody) async {
             if (responseBody["message"] != null) {
               Messages.getSnackMessage(
-                "Achievements",
-                responseBody["message"],
+                "Success".tr,
+                responseBody["message"].tr,
                 ColorsManager.green,
               );
             }
